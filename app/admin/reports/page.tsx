@@ -21,10 +21,10 @@ export default async function AdminReports({ searchParams }: { searchParams: Pro
 
   return (
     <>
-      <PageHeader title="Complaints" sub="Investigate, contact the employer, and record the outcome. Remove fraudulent or abusive listings." />
-      {sp.done && <div className="mb-6"><Notice tone="ok">✓ Updated.</Notice></div>}
+      <PageHeader deva="शिकायतें" title="Complaints" sub="Investigate, contact the employer, and record the outcome. Remove fraudulent or abusive listings." />
+      {sp.done && <div className="mb-6"><Notice tone="ok">Updated.</Notice></div>}
       <div className="space-y-4">
-        {reports.length === 0 && <Empty icon="✅" title="No reports" />}
+        {reports.length === 0 && <Empty title="No reports" />}
         {reports.map((r) => (
           <Card key={r.id} className="p-5">
             <div className="flex flex-wrap items-start justify-between gap-3">
@@ -34,7 +34,7 @@ export default async function AdminReports({ searchParams }: { searchParams: Pro
                   <Badge tone={{ open: "marigold", investigating: "indigo", resolved: "green", dismissed: "slate" }[r.status]}>{r.status}</Badge>
                   <span className="text-xs text-ink-soft">{timeAgo(r.created_at)} · by {r.reporter ?? "unknown"}</span>
                 </div>
-                <p className="mt-2 font-semibold">{r.business_name} — {r.job_id ? <Link href={`/jobs/${r.job_id}`} className="text-indigo-700 hover:underline">{r.title}</Link> : "—"}</p>
+                <p className="mt-2 font-semibold">{r.business_name} — {r.job_id ? <Link href={`/jobs/${r.job_id}`} className="text-sindoor-700 hover:underline">{r.title}</Link> : "—"}</p>
                 <p className="mt-1 leading-relaxed text-ink-soft">{r.details}</p>
               </div>
             </div>
@@ -62,7 +62,7 @@ export default async function AdminReports({ searchParams }: { searchParams: Pro
         ))}
       </div>
 
-      <h2 className="mb-4 mt-14 font-display text-2xl font-semibold text-indigo-900">Review moderation</h2>
+      <h2 className="mb-4 mt-14 font-display text-[2rem] font-semibold text-ink">Review moderation</h2>
       <div className="space-y-2">
         {comments.length === 0 && <p className="text-ink-soft">No reviews yet.</p>}
         {comments.map((c) => (

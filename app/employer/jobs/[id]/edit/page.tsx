@@ -15,7 +15,7 @@ export default async function EditJob({ params, searchParams }: { params: Promis
   const sp = await searchParams;
   return (
     <div className="mx-auto max-w-3xl px-4 py-10 sm:px-6">
-      <PageHeader title="Edit listing" sub={job.title} />
+      <PageHeader deva="बदलाव" title="Edit listing" sub={job.title} />
       <JobForm employer={emp!} job={job} error={sp.error} />
     </div>
   );

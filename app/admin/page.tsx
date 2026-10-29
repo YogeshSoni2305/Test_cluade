@@ -21,7 +21,7 @@ export default function AdminHome() {
 
   return (
     <>
-      <PageHeader title="Pilot overview" sub="The metrics the concept note says to track before building anything bigger." />
+      <PageHeader deva="पायलट" title="Pilot overview" sub="The metrics the concept note says to track before building anything bigger." />
       <div className="grid grid-cols-2 gap-4 lg:grid-cols-4">
         <Stat value={n("SELECT COUNT(*) n FROM candidate_profiles WHERE completed=1")} label="Qualified candidates" />
         <Stat value={n("SELECT COUNT(*) n FROM employers WHERE verification_status='verified'")} label="Verified employers" tone="green" />
@@ -37,10 +37,10 @@ export default function AdminHome() {
       <div className="mt-10 grid gap-5 md:grid-cols-3">
         {([["Candidates by district", byDistrict], ["Open jobs by city", byCity], ["Open jobs by industry", byInd]] as const).map(([title, rows]) => (
           <Card key={title} className="p-5">
-            <h3 className="font-display text-lg font-semibold text-indigo-900">{title}</h3>
+            <h3 className="font-display text-[1.4rem] font-semibold text-ink">{title}</h3>
             <ul className="mt-3 space-y-2 text-sm">
               {rows.map((r) => (
-                <li key={r.d} className="flex items-center justify-between gap-3"><span className="truncate capitalize">{r.d.replace("_", " ")}</span><b className="tabular-nums text-indigo-800">{r.n}</b></li>
+                <li key={r.d} className="flex items-center justify-between gap-3"><span className="truncate capitalize">{r.d.replace("_", " ")}</span><b className="tabular-nums text-sindoor-700">{r.n}</b></li>
               ))}
               {rows.length === 0 && <li className="text-ink-soft">No data yet</li>}
             </ul>

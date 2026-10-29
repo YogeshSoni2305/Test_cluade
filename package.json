@@ -12,9 +12,9 @@
   },
   "dependencies": {
     "@clerk/nextjs": "^7.9.22",
-    "@fontsource-variable/fraunces": "^5.3.0",
-    "@fontsource-variable/inter": "^5.3.0",
-    "@fontsource-variable/noto-sans-devanagari": "^5.3.0",
+    "@fontsource-variable/cormorant-garamond": "^5.3.0",
+    "@fontsource/mukta": "^5.3.0",
+    "@fontsource/tiro-devanagari-hindi": "^5.3.0",
     "better-sqlite3": "^13.0.3",
     "next": "^16.4.3",
     "react": "^19.3.1",

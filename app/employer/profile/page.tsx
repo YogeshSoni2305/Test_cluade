@@ -15,9 +15,9 @@ export default async function EmployerProfile({ searchParams }: { searchParams: 
   const e = getEmployerByUser(user.id);
   return (
     <div className="mx-auto max-w-3xl px-4 py-10 sm:px-6">
-      <PageHeader title={e ? "Business profile" : "Tell us about your business"} sub="This is shown on every listing you post. Accurate details build trust with candidates and their families." />
+      <PageHeader deva="कारोबार" title={e ? "Business profile" : "Tell us about your business"} sub="This is shown on every listing you post. Accurate details build trust with candidates and their families." />
       {sp.error && <div className="mb-6"><Notice tone="bad">{sp.error}</Notice></div>}
-      {sp.saved && <div className="mb-6"><Notice tone="ok">✓ Saved.</Notice></div>}
+      {sp.saved && <div className="mb-6"><Notice tone="ok">Saved.</Notice></div>}
       <form action={saveEmployerProfile} className="space-y-6">
         <Card className="space-y-5 p-6">
           <div className="grid gap-4 sm:grid-cols-2">
@@ -25,7 +25,7 @@ export default async function EmployerProfile({ searchParams }: { searchParams: 
             <Field label="Owner / contact person"><input name="owner_name" className="field" defaultValue={e?.owner_name || user.name} /></Field>
             <Field label="Business phone" required hint="Shared only with candidates who apply."><input name="contact_phone" className="field" required inputMode="tel" defaultValue={e?.contact_phone || user.phone || ""} /></Field>
             <Field label="Industry" required>
-              <select name="industry" className="field" defaultValue={e?.industry ?? "menswear"}>{INDUSTRIES.map((i) => <option key={i.id} value={i.id}>{i.icon} {bi(i, lang)}</option>)}</select>
+              <select name="industry" className="field" defaultValue={e?.industry ?? "menswear"}>{INDUSTRIES.map((i) => <option key={i.id} value={i.id}>{bi(i, lang)}</option>)}</select>
             </Field>
             <Field label="Type of business">
               <select name="business_type" className="field" defaultValue={e?.business_type ?? "retail"}>{BUSINESS_TYPES.map((b) => <option key={b.id} value={b.id}>{bi(b, lang)}</option>)}</select>

@@ -3,6 +3,7 @@ import { notFound, redirect } from "next/navigation";
 import { requireUser } from "@/lib/auth";
 import { getDb } from "@/lib/db";
 import { submitFeedback } from "@/app/actions";
+import { IArrowLeft } from "@/components/icons";
 import { btn, Card, Chips, Field, Notice, PageHeader } from "@/components/ui";
 
 export const dynamic = "force-dynamic";
@@ -25,9 +26,9 @@ export default async function FeedbackPage({ params, searchParams }: { params: P
 
   return (
     <div className="mx-auto max-w-2xl px-4 py-10 sm:px-6">
-      <Link href={back} className="text-sm font-semibold text-indigo-700 hover:underline">← Back</Link>
-      <PageHeader title="How is it going?" sub={`${row.title} · ${role === "candidate" ? row.business_name : row.candidate_name}`} />
-      {sp.thanks && <div className="mb-6"><Notice tone="ok">✓ Thank you — your feedback helps keep listings honest.</Notice></div>}
+      <Link href={back} className="mb-6 inline-flex items-center gap-1.5 text-[0.95rem] font-semibold text-ink-soft hover:text-sindoor-700"><IArrowLeft size={16} />Back</Link>
+      <PageHeader deva="अनुभव बताइए" title="How is it going?" sub={`${row.title} · ${role === "candidate" ? row.business_name : row.candidate_name}`} />
+      {sp.thanks && <div className="mb-6"><Notice tone="ok">Thank you — your feedback helps keep listings honest.</Notice></div>}
       {sp.error && <div className="mb-6"><Notice tone="bad">{sp.error}</Notice></div>}
       <Card className="p-6">
         <form action={submitFeedback} className="space-y-6">

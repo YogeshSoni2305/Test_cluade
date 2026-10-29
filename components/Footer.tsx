@@ -1,40 +1,48 @@
 import Link from "next/link";
 import { getI18n } from "@/lib/i18n";
-import { Logo } from "./ui";
+import { ButaBand, Seal } from "./ornaments";
 
 export async function Footer() {
   const { t } = await getI18n();
+  const cols: [string, [string, string][]][] = [
+    ["Candidates", [["/jobs", t("nav_jobs")], ["/sign-up", t("nav_signup")], ["/safety", t("nav_safety")]]],
+    ["Employers", [["/employer", t("cta_employer_btn")], ["/employer/verification", "Get verified"], ["/safety#employers", "Listing rules"]]],
+  ];
   return (
-    <footer className="mt-24 bg-indigo-950 text-indigo-100">
-      <div className="pattern-jali h-3 w-full opacity-60" />
-      <div className="mx-auto grid max-w-6xl gap-10 px-4 py-14 sm:px-6 md:grid-cols-[1.4fr_1fr_1fr]">
-        <div>
-          <div className="flex items-center gap-2.5">
-            <Logo light />
-            <span className="font-display text-xl font-semibold text-white">{t("brand")}</span>
+    <footer className="mt-28 bg-sindoor-800 text-paper-200">
+      <ButaBand color="#e0a82b" className="bg-sindoor-900" id="buta-foot" />
+      <div className="bandhani">
+        <div className="mx-auto grid max-w-6xl gap-12 px-4 py-16 sm:px-6 md:grid-cols-[1.5fr_1fr_1fr]">
+          <div>
+            <div className="flex items-center gap-3">
+              <Seal size={44} tone="paper" />
+              <div>
+                <p className="font-display text-2xl font-semibold text-paper-50">{t("brand")}</p>
+                <p className="font-deva text-sm text-haldi-300">शुभ लाभ · ईमानदार काम</p>
+              </div>
+            </div>
+            <p className="mt-6 max-w-sm text-[0.95rem] leading-relaxed text-paper-200/80">{t("footer_note")}</p>
+            <p className="mt-5 inline-flex items-center gap-2 border border-haldi-300/40 px-3 py-1.5 text-[0.9rem] font-semibold text-haldi-200">
+              {t("footer_free")}
+            </p>
           </div>
-          <p className="mt-4 max-w-sm text-sm leading-relaxed text-indigo-100/70">{t("footer_note")}</p>
-          <p className="mt-4 inline-block rounded-full bg-leaf-600/25 px-3 py-1 text-sm font-semibold text-leaf-100">✓ {t("footer_free")}</p>
+          {cols.map(([title, links]) => (
+            <div key={title}>
+              <p className="mb-4 text-[0.8rem] font-semibold uppercase tracking-[0.2em] text-haldi-300">{title}</p>
+              <ul className="space-y-2.5">
+                {links.map(([href, label]) => (
+                  <li key={href}><Link className="text-paper-200/85 transition hover:text-paper-50" href={href}>{label}</Link></li>
+                ))}
+              </ul>
+            </div>
+          ))}
         </div>
-        <div className="text-sm">
-          <p className="mb-3 font-semibold text-white">Candidates</p>
-          <ul className="space-y-2 text-indigo-100/70">
-            <li><Link className="hover:text-white" href="/jobs">{t("nav_jobs")}</Link></li>
-            <li><Link className="hover:text-white" href="/sign-up">{t("nav_signup")}</Link></li>
-            <li><Link className="hover:text-white" href="/safety">{t("nav_safety")}</Link></li>
-          </ul>
+        <div className="border-t border-paper-50/10">
+          <div className="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-2 px-4 py-5 text-[0.85rem] text-paper-200/60 sm:px-6">
+            <span>© {new Date().getFullYear()} {t("brand")}</span>
+            <span className="font-deva">राजस्थान के लिए, पूरे भारत में</span>
+          </div>
         </div>
-        <div className="text-sm">
-          <p className="mb-3 font-semibold text-white">Employers</p>
-          <ul className="space-y-2 text-indigo-100/70">
-            <li><Link className="hover:text-white" href="/employer">{t("cta_employer_btn")}</Link></li>
-            <li><Link className="hover:text-white" href="/employer/verification">Get verified</Link></li>
-            <li><Link className="hover:text-white" href="/safety#employers">Listing rules</Link></li>
-          </ul>
-        </div>
-      </div>
-      <div className="border-t border-white/10 py-5 text-center text-xs text-indigo-100/50">
-        © {new Date().getFullYear()} {t("brand")} · Made for Rajasthan
       </div>
     </footer>
   );

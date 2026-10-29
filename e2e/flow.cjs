@@ -53,7 +53,7 @@ const B = process.env.BASE_URL || 'http://localhost:3100';
   await page.goto(B + '/dev-login'); await page.locator('li:has-text("Platform Admin") button').click(); await page.waitForURL('**/admin'); await step('admin');
   await page.screenshot({ path: S + '11-admin.png', fullPage: true });
   await page.goto(B + '/admin/employers'); await page.screenshot({ path: S + '12-admin-emp.png', fullPage: true });
-  const card = page.locator('div.rounded-3xl:has-text("Mewar Jewellers")').first();
+  const card = page.locator('div', { has: page.locator('a', { hasText: 'Mewar Jewellers' }) }).filter({ has: page.locator('form') }).last();
   await card.locator('input[value=business]').check(); await card.locator('input[value=address]').check();
   await card.locator('button:has-text("Verify")').click(); await page.waitForURL('**done=1'); await step('verified employer');
   await page.goto(B + '/admin/reports'); await page.screenshot({ path: S + '13-admin-reports.png', fullPage: true });
@@ -66,7 +66,7 @@ const B = process.env.BASE_URL || 'http://localhost:3100';
 
   // mobile + hindi
   const m = await browser.newContext({ viewport: { width: 390, height: 844 } }); const mp = await m.newPage();
-  await mp.goto(B + '/'); await mp.click('button[aria-label="Switch language"]'); await mp.waitForTimeout(500);
+  await mp.goto(B + '/'); await mp.click('button[aria-label="हिन्दी"]'); await mp.waitForTimeout(500);
   await mp.screenshot({ path: S + '15-mobile-hi.png', fullPage: true });
   await mp.goto(B + '/jobs/1'); await mp.screenshot({ path: S + '16-mobile-job.png', fullPage: true });
   console.log('ERRORS:', errors);

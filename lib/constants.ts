@@ -1,18 +1,18 @@
 export type Bi = { en: string; hi: string };
 
-export type Industry = Bi & { id: string; icon: string };
+export type Industry = Bi & { id: string };
 export const INDUSTRIES: Industry[] = [
-  { id: "menswear", icon: "👔", en: "Men's clothing & apparel retail", hi: "पुरुष वस्त्र / रेडीमेड शोरूम" },
-  { id: "garment_wholesale", icon: "🧵", en: "Garment & textile wholesale", hi: "कपड़ा / गारमेंट थोक" },
-  { id: "mobile_retail", icon: "📱", en: "Mobile phones & electronics retail", hi: "मोबाइल व इलेक्ट्रॉनिक्स दुकान" },
-  { id: "mobile_repair", icon: "🛠️", en: "Mobile repair & accessories", hi: "मोबाइल रिपेयर व एक्सेसरीज़" },
-  { id: "auto_parts", icon: "⚙️", en: "Automobile spare parts", hi: "ऑटो स्पेयर पार्ट्स" },
-  { id: "garage", icon: "🚗", en: "Garage & vehicle servicing", hi: "गैराज / वाहन सर्विसिंग" },
-  { id: "hardware", icon: "🧱", en: "Hardware & building materials", hi: "हार्डवेयर व निर्माण सामग्री" },
-  { id: "furniture", icon: "🪑", en: "Furniture & interiors", hi: "फर्नीचर व इंटीरियर" },
-  { id: "jewellery", icon: "💍", en: "Jewellery retail", hi: "ज्वेलरी शोरूम" },
-  { id: "restaurant", icon: "🍛", en: "Restaurant & food business", hi: "रेस्टोरेंट / खान-पान" },
-  { id: "other", icon: "🏪", en: "Other retail, wholesale & trade", hi: "अन्य दुकान / व्यापार" },
+  { id: "menswear", en: "Men's clothing & apparel retail", hi: "पुरुष वस्त्र / रेडीमेड शोरूम" },
+  { id: "garment_wholesale", en: "Garment & textile wholesale", hi: "कपड़ा / गारमेंट थोक" },
+  { id: "mobile_retail", en: "Mobile phones & electronics retail", hi: "मोबाइल व इलेक्ट्रॉनिक्स दुकान" },
+  { id: "mobile_repair", en: "Mobile repair & accessories", hi: "मोबाइल रिपेयर व एक्सेसरीज़" },
+  { id: "auto_parts", en: "Automobile spare parts", hi: "ऑटो स्पेयर पार्ट्स" },
+  { id: "garage", en: "Garage & vehicle servicing", hi: "गैराज / वाहन सर्विसिंग" },
+  { id: "hardware", en: "Hardware & building materials", hi: "हार्डवेयर व निर्माण सामग्री" },
+  { id: "furniture", en: "Furniture & interiors", hi: "फर्नीचर व इंटीरियर" },
+  { id: "jewellery", en: "Jewellery retail", hi: "ज्वेलरी शोरूम" },
+  { id: "restaurant", en: "Restaurant & food business", hi: "रेस्टोरेंट / खान-पान" },
+  { id: "other", en: "Other retail, wholesale & trade", hi: "अन्य दुकान / व्यापार" },
 ];
 
 export const CITIES = [
@@ -43,17 +43,17 @@ export const LANGUAGES = [
   "Punjabi", "Urdu", "Kannada", "Telugu", "Tamil", "Bengali",
 ];
 
-export type Goal = Bi & { id: string; icon: string; blurb: Bi };
+export type Goal = Bi & { id: string; blurb: Bi };
 export const GOALS: Goal[] = [
-  { id: "job", icon: "💼", en: "I want a job", hi: "मुझे नौकरी चाहिए",
+  { id: "job", en: "I want a job", hi: "मुझे नौकरी चाहिए",
     blurb: { en: "Steady work, clear pay, honest terms.", hi: "पक्का काम, साफ़ वेतन, ईमानदार शर्तें।" } },
-  { id: "learn", icon: "🎓", en: "I want to learn a trade", hi: "मुझे काम सीखना है",
+  { id: "learn", en: "I want to learn a trade", hi: "मुझे काम सीखना है",
     blurb: { en: "Learn how a real business runs, by doing.", hi: "काम करते हुए असली कारोबार सीखें।" } },
-  { id: "manager", icon: "📈", en: "I want to grow into a manager", hi: "मुझे मैनेजर बनना है",
+  { id: "manager", en: "I want to grow into a manager", hi: "मुझे मैनेजर बनना है",
     blurb: { en: "Start on the floor, grow to supervise.", hi: "दुकान से शुरू करें, सुपरवाइज़र तक बढ़ें।" } },
-  { id: "family", icon: "🏠", en: "Experience for my family business", hi: "परिवार के कारोबार के लिए अनुभव",
+  { id: "family", en: "Experience for my family business", hi: "परिवार के कारोबार के लिए अनुभव",
     blurb: { en: "Gain skills before you go back home.", hi: "घर लौटने से पहले हुनर सीखें।" } },
-  { id: "explore", icon: "🌱", en: "Exploring my own business later", hi: "आगे अपना काम शुरू करना है",
+  { id: "explore", en: "Exploring my own business later", hi: "आगे अपना काम शुरू करना है",
     blurb: { en: "Understand an industry before you invest.", hi: "पैसा लगाने से पहले कारोबार को समझें।" } },
 ];
 

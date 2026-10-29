@@ -40,6 +40,16 @@ On first run (bypass mode) the SQLite database at `data/app.db` is created and s
 * **Safety loop:** report → admin review → resolve/remove listing; moderated reviews; no candidate fees.
 * **Pilot metrics:** interview rate, hires, 30/90-day retention, listing accuracy, complaints.
 
+## Design
+
+The visual language borrows from the *bahi-khata*, the red cloth ledger every Marwari business keeps, and from Rajasthani craft:
+
+* **Type:** Cormorant Garamond (display), Tiro Devanagari Hindi (Hindi display), Mukta (body text in both scripts, designed in India by Ek Type).
+* **Colour:** handmade-paper cream, sindoor/ledger red, haldi yellow, neel indigo, and peacock teal for anything verified.
+* **Motifs** (all hand-built SVG/CSS in `components/ornaments.tsx` and `app/globals.css`): leheriya stripes, bandhani dots, block-print *buta* borders, a cusped jharokha arch, ruled ledger pages, a red *chop* seal logo and a rubber-stamp “Verified” mark.
+* **Icons:** a custom line set in `components/icons.tsx` (kurta, thread spool, tarazu scale, haveli, thali, dukaan awning…), with no emoji.
+* Listings are drawn as ledger slips (salary, stay and deductions laid out as ledger rows), and job terms as a ledger table.
+
 ## Testing
 
 `e2e/flow.cjs` drives the whole product in a browser (candidate sign-up → apply → report; employer status update and job posting with validation; admin verification; feedback; mobile + Hindi). With a fresh DB and the server running (`npm run build && npm start -p 3100`), run `NODE_PATH=$(npm root -g) npm run e2e` (needs Playwright installed globally).

@@ -14,7 +14,7 @@ export default async function NewJob({ searchParams }: { searchParams: Promise<{
   const sp = await searchParams;
   return (
     <div className="mx-auto max-w-3xl px-4 py-10 sm:px-6">
-      <PageHeader title="Post a job" sub="Clear, honest listings get more — and better — applicants." />
+      <PageHeader deva="नई नौकरी" title="Post a job" sub="Clear, honest listings get more — and better — applicants." />
       {emp!.verification_status !== "verified" && (
         <div className="mb-6"><Notice tone="warn">Your business isn’t verified yet, so your listing will show “Not yet verified”. <a href="/employer/verification" className="font-semibold underline">Get verified</a> to build trust.</Notice></div>
       )}

@@ -14,8 +14,8 @@ export default async function AdminEmployers({ searchParams }: { searchParams: P
   const employers = rows.map((r) => hydrateEmployer(r)!);
   return (
     <>
-      <PageHeader title="Employer verification" sub="Complete the checks off-platform (call, ID, visit), then record exactly what you verified. Candidates see these ticks." />
-      {sp.done && <div className="mb-6"><Notice tone="ok">✓ Updated.</Notice></div>}
+      <PageHeader deva="सत्यापन" title="Employer verification" sub="Complete the checks off-platform (call, ID, visit), then record exactly what you verified. Candidates see these ticks." />
+      {sp.done && <div className="mb-6"><Notice tone="ok">Updated.</Notice></div>}
       {sp.error && <div className="mb-6"><Notice tone="bad">{sp.error}</Notice></div>}
       <div className="space-y-4">
         {employers.length === 0 && <Empty title="No employers yet" />}
@@ -23,7 +23,7 @@ export default async function AdminEmployers({ searchParams }: { searchParams: P
           <Card key={e.id} className="p-5">
             <div className="flex flex-wrap items-start justify-between gap-3">
               <div>
-                <Link href={`/employers/${e.id}`} className="font-display text-lg font-semibold text-indigo-900 hover:underline">{e.business_name}</Link>
+                <Link href={`/employers/${e.id}`} className="font-display text-[1.4rem] font-semibold text-ink hover:underline">{e.business_name}</Link>
                 <p className="text-sm text-ink-soft">{e.owner_name} · {e.city} · {e.contact_phone} · {e.years_in_business ?? "?"} yrs</p>
                 {(e.gst_number || e.id_proof_note) && <p className="mt-1 text-xs text-ink-soft">GST: {e.gst_number ?? "—"} · ID proof offered: {e.id_proof_note ?? "—"}</p>}
               </div>
@@ -38,7 +38,7 @@ export default async function AdminEmployers({ searchParams }: { searchParams: P
               </div>
               <input name="note" className="field !py-2 text-sm" placeholder="Internal / public note (shown to employer)" defaultValue={e.verification_note ?? ""} />
               <div className="flex flex-wrap gap-2">
-                <button name="decision" value="verify" className={btn("success", "sm")}>✓ Verify</button>
+                <button name="decision" value="verify" className={btn("success", "sm")}>Verify</button>
                 <button name="decision" value="reject" className={btn("danger", "sm")}>Reject & remove listings</button>
                 {e.verification_status === "verified" && <button name="decision" value="revoke" className={btn("outline", "sm")}>Revoke badge</button>}
               </div>

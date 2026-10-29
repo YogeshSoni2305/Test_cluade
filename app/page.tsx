@@ -3,7 +3,9 @@ import { getI18n, bi } from "@/lib/i18n";
 import { GOALS, INDUSTRIES } from "@/lib/constants";
 import { searchJobs, siteStats } from "@/lib/queries";
 import { JobCard } from "@/components/JobCard";
-import { LinkButton, SectionTitle, ShieldIcon } from "@/components/ui";
+import { LinkButton, SectionTitle } from "@/components/ui";
+import { ButaBand, Jharokha, Ornament, Stamp, toDeva } from "@/components/ornaments";
+import { GoalIcon, IArrow, IndustryIcon, IPin, IPhone, IDoc, IShield } from "@/components/icons";
 
 export const dynamic = "force-dynamic";
 
@@ -14,168 +16,180 @@ export default async function Home() {
 
   return (
     <>
-      {/* HERO */}
-      <section className="relative overflow-hidden bg-indigo-900 text-white">
-        <div className="pattern-jali absolute inset-0 opacity-80" />
-        <div className="absolute -right-24 -top-24 h-96 w-96 rounded-full bg-marigold-400/20 blur-3xl" />
-        <div className="absolute -bottom-32 -left-16 h-96 w-96 rounded-full bg-rani-500/20 blur-3xl" />
-        <div className="relative mx-auto grid max-w-6xl items-center gap-12 px-4 pb-24 pt-16 sm:px-6 lg:grid-cols-[1.15fr_1fr] lg:pt-24">
+      {/* ───────────── HERO ───────────── */}
+      <section className="relative overflow-hidden">
+        <div className="leheriya-soft absolute inset-y-0 right-0 hidden w-[38%] lg:block" />
+        <div className="relative mx-auto grid max-w-6xl items-center gap-14 px-4 pb-20 pt-14 sm:px-6 lg:grid-cols-[1.2fr_1fr] lg:pb-28 lg:pt-20">
           <div className="animate-rise">
-            <p className="inline-flex items-center gap-2 rounded-full bg-white/10 px-4 py-1.5 text-sm font-semibold text-marigold-300 ring-1 ring-white/15">
-              <span aria-hidden>🏜️</span> {t("hero_kicker")}
+            <p className="flex flex-wrap items-baseline gap-x-3 text-[0.82rem] font-semibold uppercase tracking-[0.22em] text-sindoor-600">
+              <span className="font-deva text-[1.1rem] normal-case tracking-normal">राजस्थान के युवाओं के लिए</span>
+              <span className="deva-accent text-ink-faint">/</span>
+              <span className="deva-accent">{t("hero_kicker")}</span>
             </p>
-            <h1 className="mt-6 font-display text-[2.6rem] font-semibold leading-[1.05] tracking-tight sm:text-6xl">
+            <h1 className="mt-6 font-display text-[3.2rem] font-medium leading-[0.98] tracking-[-0.02em] text-ink sm:text-[4.6rem] lg:text-[5.2rem]">
               {t("hero_title_1")}
-              <span className="mt-1 block text-marigold-400">{t("hero_title_2")}</span>
+              <span className="block italic text-sindoor-600">{t("hero_title_2")}</span>
             </h1>
-            <p className="mt-6 max-w-xl text-lg leading-relaxed text-indigo-100/85">{t("hero_sub")}</p>
+            <p className="mt-7 max-w-xl text-[1.2rem] leading-relaxed text-ink-soft">{t("hero_sub")}</p>
             <div className="mt-9 flex flex-wrap gap-3">
-              <LinkButton href="/jobs" variant="gold" size="lg">{t("hero_cta_primary")} →</LinkButton>
-              <LinkButton href="/employer" variant="outline" size="lg" className="!border-white/30 !bg-transparent !text-white hover:!bg-white/10">
-                {t("hero_cta_secondary")}
-              </LinkButton>
+              <LinkButton href="/jobs" variant="primary" size="lg">{t("hero_cta_primary")} <IArrow size={18} /></LinkButton>
+              <LinkButton href="/employer" variant="outline" size="lg">{t("hero_cta_secondary")}</LinkButton>
             </div>
-            <dl className="mt-12 grid max-w-xl grid-cols-2 gap-6 sm:grid-cols-4">
+
+            <dl className="mt-14 grid max-w-xl grid-cols-4 divide-x divide-line border-y border-line">
               {[
                 [stats.openJobs, t("stat_jobs")],
                 [stats.verified, t("stat_verified")],
                 [stats.cities, t("stat_cities")],
                 ["₹0", t("stat_fees")],
               ].map(([v, l]) => (
-                <div key={String(l)}>
-                  <dt className="font-display text-3xl font-semibold text-white">{v}</dt>
-                  <dd className="mt-0.5 text-xs leading-tight text-indigo-100/70">{l}</dd>
+                <div key={String(l)} className="px-3 py-4 first:pl-0">
+                  <dt className="num font-display text-[2.2rem] font-semibold leading-none text-ink">{v}</dt>
+                  <dd className="mt-1.5 text-[0.78rem] leading-tight text-ink-soft">{l}</dd>
                 </div>
               ))}
             </dl>
           </div>
 
-          {/* Floating preview of a transparent listing */}
-          <div className="relative mx-auto hidden w-full max-w-md lg:block">
-            <div className="arch absolute inset-x-8 -top-6 bottom-6 bg-marigold-400 bandhani" />
-            <div className="animate-float relative rounded-3xl bg-white p-6 text-ink shadow-[0_40px_80px_-30px_rgba(0,0,0,.6)]">
-              <div className="flex items-center gap-3">
-                <div className="arch flex h-14 w-12 items-center justify-center bg-indigo-50 text-2xl">👔</div>
-                <div>
-                  <p className="font-display text-lg font-semibold text-indigo-900">Showroom Sales Trainee</p>
-                  <p className="text-sm text-ink-soft">Shree Ram Menswear · Surat</p>
+          {/* Jharokha window holding a ledger slip */}
+          <div className="relative mx-auto hidden w-full max-w-[25rem] lg:block">
+            <Jharokha className="aspect-[3/4] w-full">
+              <div className="absolute inset-x-8 bottom-10 top-[38%] -rotate-[2.5deg]">
+                <div className="ledger h-full rounded-[2px] border border-paper-300 py-5 pl-14 pr-5 shadow-[6px_10px_0_rgba(0,0,0,.18)]">
+                  <p className="text-[0.72rem] font-semibold uppercase tracking-[0.16em] text-ink-soft">Shree Ram Menswear</p>
+                  <p className="mt-1 font-display text-[1.65rem] font-semibold leading-tight text-ink">Showroom Sales Trainee</p>
+                  <p className="mt-1 flex items-center gap-1 text-sm text-ink-soft"><IPin size={14} className="text-sindoor-500" />Surat, Ring Road</p>
+                  <dl className="mt-3 text-[0.92rem]">
+                    {[["Salary", "₹12,000 – 15,000"], ["Hours", "10 am – 9:30 pm"], ["Stay", "Free, shared flat"], ["Deductions", "None"]].map(([k, v]) => (
+                      <div key={k} className="flex h-8 items-end gap-2"><dt className="text-ink-soft">{k}</dt><span className="leader" /><dd className="font-semibold">{v}</dd></div>
+                    ))}
+                  </dl>
                 </div>
+                <Stamp size={108} className="absolute -bottom-9 -right-9 rotate-[14deg]" />
               </div>
-              <div className="mt-4 grid grid-cols-2 gap-2.5 text-sm">
-                {[
-                  ["💰", "Salary", "₹12,000 – 15,000"],
-                  ["🕙", "Hours", "10 am – 9:30 pm"],
-                  ["🛏", "Stay", "Free · shared flat"],
-                  ["✂️", "Deductions", "None"],
-                ].map(([i, k, v]) => (
-                  <div key={k} className="rounded-2xl bg-cream-100 px-3 py-2.5">
-                    <p className="text-xs text-ink-soft">{i} {k}</p>
-                    <p className="font-semibold">{v}</p>
-                  </div>
-                ))}
-              </div>
-              <div className="mt-3 rounded-2xl bg-leaf-50 px-3 py-2.5 text-sm text-leaf-700">
-                <p className="font-semibold">You can learn</p>
-                <p>Billing · Stock · Pricing · Supplier dealing</p>
-              </div>
-              <div className="mt-4 inline-flex items-center gap-1.5 rounded-full bg-leaf-100 px-3 py-1 text-xs font-bold text-leaf-700">
-                <ShieldIcon className="h-3.5 w-3.5" /> {t("verified")} · 4/4 checks
-              </div>
-            </div>
+              <p className="absolute inset-x-0 top-[17%] text-center font-deva text-[2.6rem] leading-none text-haldi-300">काम</p>
+              <p className="absolute inset-x-0 top-[28%] text-center text-[0.72rem] font-semibold uppercase tracking-[0.3em] text-paper-200/80">earn · learn · grow</p>
+            </Jharokha>
           </div>
         </div>
-        <div className="border-scallop relative" style={{ ["--scallop" as string]: "#fffbf3" }} />
+        <ButaBand />
       </section>
 
-      {/* GOALS */}
-      <section className="mx-auto max-w-6xl px-4 py-20 sm:px-6">
-        <SectionTitle center kicker="01" title={t("hero_goal_title")} sub={t("hero_goal_sub")} />
-        <div className="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-5">
+      {/* ───────────── GOALS ───────────── */}
+      <section className="mx-auto grid max-w-6xl gap-12 px-4 py-24 sm:px-6 lg:grid-cols-[1fr_1.4fr]">
+        <div className="lg:sticky lg:top-28 lg:self-start">
+          <SectionTitle deva="आपका लक्ष्य" kicker="Your goal" title={t("hero_goal_title")} sub={t("hero_goal_sub")} />
+        </div>
+        <ol className="border-t border-ink">
           {GOALS.map((g, i) => (
-            <Link
-              key={g.id}
-              href={`/jobs?goal=${g.id}`}
-              className="group relative overflow-hidden rounded-3xl border border-line bg-white p-5 shadow-card transition hover:-translate-y-1.5 hover:border-marigold-500 hover:shadow-lift"
-              style={{ animationDelay: `${i * 70}ms` }}
-            >
-              <div className="arch mb-4 flex h-16 w-14 items-center justify-center bg-cream-200 text-3xl transition group-hover:bg-marigold-300">{g.icon}</div>
-              <h3 className="font-display text-lg font-semibold leading-snug text-indigo-900">{bi(g, lang)}</h3>
-              <p className="mt-2 text-sm leading-relaxed text-ink-soft">{bi(g.blurb, lang)}</p>
-              <span className="mt-4 inline-block text-sm font-semibold text-rani-600 opacity-0 transition group-hover:opacity-100">→</span>
-            </Link>
-          ))}
-        </div>
-      </section>
-
-      {/* FEATURED JOBS */}
-      <section className="bg-cream-100 py-20">
-        <div className="mx-auto max-w-6xl px-4 sm:px-6">
-          <div className="flex flex-wrap items-end justify-between gap-4">
-            <SectionTitle kicker="02" title={t("featured_title")} />
-            <Link href="/jobs" className="text-sm font-semibold text-indigo-700 hover:underline">{t("view_all")} →</Link>
-          </div>
-          <div className="mt-10 grid gap-5 md:grid-cols-2 lg:grid-cols-3">
-            {featured.map((j) => <JobCard key={j.id} job={j} lang={lang} t={t} />)}
-          </div>
-        </div>
-      </section>
-
-      {/* HOW IT WORKS */}
-      <section className="mx-auto max-w-6xl px-4 py-24 sm:px-6">
-        <SectionTitle center kicker="03" title={t("how_title")} />
-        <ol className="mt-14 grid gap-8 md:grid-cols-3">
-          {[1, 2, 3].map((n) => (
-            <li key={n} className="relative rounded-3xl border border-line bg-white p-7 shadow-card">
-              <span className="absolute -top-5 left-7 flex h-10 w-10 items-center justify-center rounded-full bg-marigold-400 font-display text-lg font-bold text-indigo-950 shadow-md">{n}</span>
-              <h3 className="mt-3 font-display text-xl font-semibold text-indigo-900">{t(`how_${n}_t` as "how_1_t")}</h3>
-              <p className="mt-2 leading-relaxed text-ink-soft">{t(`how_${n}_d` as "how_1_d")}</p>
+            <li key={g.id}>
+              <Link href={`/jobs?goal=${g.id}`} className="group grid grid-cols-[3.2rem_1fr_auto] items-center gap-4 border-b border-line py-6 transition hover:bg-paper-50/80 sm:grid-cols-[4rem_1fr_auto]">
+                <span className="font-deva text-[2.6rem] leading-none text-sindoor-500 transition group-hover:text-sindoor-700">{toDeva(i + 1)}</span>
+                <span>
+                  <span className="flex items-center gap-2.5 font-display text-[1.75rem] font-semibold leading-tight text-ink">
+                    {bi(g, lang)}
+                    <GoalIcon id={g.id} size={20} className="hidden text-ink-faint sm:block" />
+                  </span>
+                  <span className="mt-1 block text-ink-soft">{bi(g.blurb, lang)}</span>
+                </span>
+                <span className="flex h-10 w-10 items-center justify-center rounded-full border border-line text-ink-soft transition group-hover:border-sindoor-500 group-hover:bg-sindoor-600 group-hover:text-paper-50">
+                  <IArrow size={18} />
+                </span>
+              </Link>
             </li>
           ))}
         </ol>
       </section>
 
-      {/* TRUST */}
-      <section className="relative overflow-hidden bg-indigo-950 py-24 text-white">
-        <div className="pattern-jali absolute inset-0 opacity-60" />
-        <div className="relative mx-auto grid max-w-6xl gap-12 px-4 sm:px-6 lg:grid-cols-[1fr_1.2fr]">
-          <SectionTitle light kicker="04" title={t("trust_title")} sub={t("trust_sub")} />
-          <ul className="grid gap-4 sm:grid-cols-2">
-            {(["trust_1", "trust_2", "trust_3", "trust_4", "trust_5"] as const).map((k, i) => (
-              <li key={k} className={`rounded-2xl bg-white/[.07] p-5 ring-1 ring-white/10 backdrop-blur ${i === 4 ? "sm:col-span-2" : ""}`}>
-                <span className="mb-2 flex h-8 w-8 items-center justify-center rounded-full bg-leaf-500/25 text-leaf-100"><ShieldIcon /></span>
-                <p className="leading-relaxed text-indigo-50">{t(k)}</p>
-              </li>
-            ))}
-          </ul>
+      {/* ───────────── FEATURED ───────────── */}
+      <section className="border-y border-line bg-paper-200/50 py-24">
+        <div className="mx-auto max-w-6xl px-4 sm:px-6">
+          <div className="flex flex-wrap items-end justify-between gap-6">
+            <SectionTitle deva="ताज़ा अवसर" kicker="Fresh this week" title={t("featured_title")} />
+            <Link href="/jobs" className="group inline-flex items-center gap-2 font-semibold text-sindoor-700">
+              {t("view_all")} <IArrow size={18} className="transition group-hover:translate-x-1" />
+            </Link>
+          </div>
+          <div className="mt-12 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+            {featured.map((j) => <JobCard key={j.id} job={j} lang={lang} t={t} />)}
+          </div>
         </div>
       </section>
 
-      {/* INDUSTRIES */}
+      {/* ───────────── HOW IT WORKS ───────────── */}
       <section className="mx-auto max-w-6xl px-4 py-24 sm:px-6">
-        <SectionTitle center kicker="05" title={t("industries_title")} />
-        <div className="mt-12 flex flex-wrap justify-center gap-3">
+        <SectionTitle center deva="कैसे काम करता है" kicker="Three steps" title={t("how_title")} />
+        <ol className="relative mt-16 grid gap-12 md:grid-cols-3 md:gap-8">
+          <span className="absolute left-0 right-0 top-7 hidden border-t-2 border-dotted border-paper-300 md:block" aria-hidden />
+          {[[IPhone, 1], [IDoc, 2], [IShield, 3]].map(([Icon, n]) => {
+            const I = Icon as typeof IPhone;
+            return (
+              <li key={n as number} className="relative text-center">
+                <span className="relative mx-auto flex h-14 w-14 items-center justify-center rounded-full border border-sindoor-500 bg-paper-100 text-sindoor-600">
+                  <I size={24} />
+                  <span className="absolute -right-2 -top-2 flex h-7 w-7 items-center justify-center rounded-full bg-sindoor-600 font-deva text-[0.95rem] text-paper-50">{toDeva(n as number)}</span>
+                </span>
+                <h3 className="mt-6 font-display text-[1.7rem] font-semibold leading-tight text-ink">{t(`how_${n}_t` as "how_1_t")}</h3>
+                <p className="mx-auto mt-2 max-w-xs leading-relaxed text-ink-soft">{t(`how_${n}_d` as "how_1_d")}</p>
+              </li>
+            );
+          })}
+        </ol>
+      </section>
+
+      {/* ───────────── PROMISE ───────────── */}
+      <section className="relative bg-sindoor-800 text-paper-100">
+        <div className="leheriya h-[6px]" />
+        <div className="bandhani">
+          <div className="mx-auto grid max-w-6xl gap-14 px-4 py-24 sm:px-6 lg:grid-cols-[1fr_1.3fr]">
+            <div>
+              <SectionTitle light deva="हमारा वचन" kicker="Our promise" title={t("trust_title")} sub={t("trust_sub")} />
+              <Stamp size={150} className="mt-10 hidden -rotate-12 !text-haldi-300 lg:block" />
+            </div>
+            <ol className="divide-y divide-paper-50/15 border-y border-paper-50/15">
+              {(["trust_1", "trust_2", "trust_3", "trust_4", "trust_5"] as const).map((k, i) => (
+                <li key={k} className="grid grid-cols-[2.5rem_1fr] gap-4 py-5">
+                  <span className="font-deva text-[1.8rem] leading-none text-haldi-300">{toDeva(i + 1)}</span>
+                  <p className="text-[1.08rem] leading-relaxed text-paper-100/90">{t(k)}</p>
+                </li>
+              ))}
+            </ol>
+          </div>
+        </div>
+      </section>
+
+      {/* ───────────── INDUSTRIES (aala niches) ───────────── */}
+      <section className="mx-auto max-w-6xl px-4 py-24 sm:px-6">
+        <SectionTitle center deva="कौन-सा कारोबार" kicker="Trades" title={t("industries_title")} />
+        <div className="mt-14 grid grid-cols-2 gap-x-4 gap-y-8 sm:grid-cols-3 lg:grid-cols-6">
           {INDUSTRIES.map((i) => (
-            <Link key={i.id} href={`/jobs?industry=${i.id}`}
-              className="flex items-center gap-2.5 rounded-full border border-line bg-white px-5 py-3 font-medium text-indigo-900 shadow-card transition hover:-translate-y-0.5 hover:border-marigold-500">
-              <span className="text-xl" aria-hidden>{i.icon}</span>{bi(i, lang)}
+            <Link key={i.id} href={`/jobs?industry=${i.id}`} className="group text-center">
+              <span className="mx-auto flex h-28 w-24 items-end justify-center rounded-t-full border border-line bg-paper-50 p-1.5 shadow-card transition group-hover:-translate-y-1 group-hover:border-sindoor-400">
+                <span className="flex h-full w-full items-center justify-center rounded-t-full bg-paper-200/70 text-sindoor-600 transition group-hover:bg-sindoor-600 group-hover:text-paper-50">
+                  <IndustryIcon id={i.id} size={30} />
+                </span>
+              </span>
+              <span className="mt-3 block text-[0.95rem] font-medium leading-snug text-ink">{bi(i, lang)}</span>
             </Link>
           ))}
         </div>
       </section>
 
-      {/* EMPLOYER CTA */}
+      {/* ───────────── EMPLOYER CTA ───────────── */}
       <section className="mx-auto max-w-6xl px-4 sm:px-6">
-        <div className="relative overflow-hidden rounded-[2rem] bg-marigold-400 px-8 py-14 text-indigo-950 sm:px-14">
-          <div className="pattern-jali-light absolute inset-0" />
-          <div className="relative grid items-center gap-8 md:grid-cols-[1.4fr_1fr]">
+        <div className="relative overflow-hidden rounded-[4px] bg-neel-800 text-paper-100">
+          <div className="leheriya h-[6px]" />
+          <div className="grid items-center gap-8 px-8 py-14 sm:px-14 md:grid-cols-[1.5fr_1fr]">
             <div>
-              <h2 className="font-display text-3xl font-semibold leading-tight sm:text-4xl">{t("cta_employer_title")}</h2>
-              <p className="mt-3 max-w-xl text-lg text-indigo-950/80">{t("cta_employer_sub")}</p>
+              <p className="font-deva text-lg text-haldi-300">दुकान मालिकों के लिए</p>
+              <h2 className="mt-2 font-display text-[2.4rem] font-medium leading-[1.05] sm:text-[3rem]">{t("cta_employer_title")}</h2>
+              <p className="mt-4 max-w-xl text-[1.1rem] text-paper-200/80">{t("cta_employer_sub")}</p>
             </div>
             <div className="md:text-right">
-              <LinkButton href="/employer" variant="primary" size="lg">{t("cta_employer_btn")} →</LinkButton>
+              <LinkButton href="/employer" variant="gold" size="lg">{t("cta_employer_btn")} <IArrow size={18} /></LinkButton>
             </div>
           </div>
+          <Ornament color="text-haldi-300" className="px-8 pb-6 opacity-50" />
         </div>
       </section>
     </>

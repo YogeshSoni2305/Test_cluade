@@ -1,115 +1,189 @@
 @import "tailwindcss";
 
 @theme {
-  --font-display: "Fraunces Variable", "Noto Sans Devanagari Variable", ui-serif, Georgia, serif;
-  --font-sans: "Inter Variable", "Noto Sans Devanagari Variable", ui-sans-serif, system-ui, sans-serif;
+  --font-display: "Cormorant Garamond Variable", "Tiro Devanagari Hindi", ui-serif, Georgia, serif;
+  --font-deva: "Tiro Devanagari Hindi", "Cormorant Garamond Variable", serif;
+  --font-sans: "Mukta", ui-sans-serif, system-ui, sans-serif;
 
-  --color-ink: #1d1a16;
-  --color-ink-soft: #5b5348;
-  --color-line: #eadfc9;
+  /* Handmade paper & ink */
+  --color-paper-50: #fdfaf3;
+  --color-paper-100: #f6efe1;
+  --color-paper-200: #ece0c8;
+  --color-paper-300: #dcc9a6;
+  --color-ink: #231912;
+  --color-ink-soft: #6a5848;
+  --color-ink-faint: #9a8a78;
+  --color-line: #dccdb2;
+  --color-gold: #b08a3e;
 
-  --color-cream-50: #fffbf3;
-  --color-cream-100: #fbf4e4;
-  --color-cream-200: #f4e8cc;
-  --color-cream-300: #ead8aa;
+  /* Bahi-khata red (sindoor) */
+  --color-sindoor-50: #f9ebe7;
+  --color-sindoor-100: #f0d2ca;
+  --color-sindoor-400: #c9483c;
+  --color-sindoor-500: #b0281f;
+  --color-sindoor-600: #971d17;
+  --color-sindoor-700: #7a1612;
+  --color-sindoor-800: #5a100d;
+  --color-sindoor-900: #3d0b09;
 
-  --color-indigo-50: #eef0fb;
-  --color-indigo-100: #dfe2f6;
-  --color-indigo-500: #4a52c4;
-  --color-indigo-600: #353da8;
-  --color-indigo-700: #292f86;
-  --color-indigo-800: #1e2366;
-  --color-indigo-900: #14173f;
-  --color-indigo-950: #0d0f2b;
+  /* Haldi (turmeric) */
+  --color-haldi-100: #f8e9c2;
+  --color-haldi-200: #f2d78b;
+  --color-haldi-300: #ecc45a;
+  --color-haldi-400: #e0a82b;
+  --color-haldi-500: #c78b12;
+  --color-haldi-700: #855a08;
 
-  --color-marigold-300: #fbd36b;
-  --color-marigold-400: #f7bd3a;
-  --color-marigold-500: #f0a012;
-  --color-marigold-600: #d4840a;
-  --color-marigold-700: #a8650a;
+  /* Neel (indigo dye) */
+  --color-neel-50: #eceef4;
+  --color-neel-100: #d2d7e5;
+  --color-neel-300: #8e98b8;
+  --color-neel-500: #3b4a78;
+  --color-neel-700: #213058;
+  --color-neel-800: #18233f;
+  --color-neel-900: #10172c;
 
-  --color-rani-50: #fdeef4;
-  --color-rani-500: #d0306f;
-  --color-rani-600: #b32060;
-  --color-rani-700: #8e1a4d;
+  /* Peacock — used for "verified" */
+  --color-peacock-50: #e4f1ee;
+  --color-peacock-100: #c5e2dc;
+  --color-peacock-500: #11706a;
+  --color-peacock-600: #0c5b55;
+  --color-peacock-700: #084540;
 
-  --color-leaf-50: #e8f6ee;
-  --color-leaf-100: #cdecda;
-  --color-leaf-500: #1f9a63;
-  --color-leaf-600: #17794e;
-  --color-leaf-700: #135f3e;
+  /* legacy aliases (admin & form pages) */
+  --color-cream-50: var(--color-paper-50);
+  --color-cream-100: var(--color-paper-100);
+  --color-cream-200: var(--color-paper-200);
+  --color-cream-300: var(--color-paper-300);
+  --color-indigo-50: var(--color-neel-50);
+  --color-indigo-100: var(--color-neel-100);
+  --color-indigo-500: var(--color-neel-500);
+  --color-indigo-600: var(--color-neel-500);
+  --color-indigo-700: var(--color-neel-700);
+  --color-indigo-800: var(--color-neel-800);
+  --color-indigo-900: var(--color-ink);
+  --color-indigo-950: var(--color-neel-900);
+  --color-marigold-300: var(--color-haldi-200);
+  --color-marigold-400: var(--color-haldi-400);
+  --color-marigold-500: var(--color-haldi-500);
+  --color-marigold-600: var(--color-haldi-500);
+  --color-marigold-700: var(--color-haldi-700);
+  --color-rani-50: var(--color-sindoor-50);
+  --color-rani-500: var(--color-sindoor-500);
+  --color-rani-600: var(--color-sindoor-600);
+  --color-rani-700: var(--color-sindoor-700);
+  --color-leaf-50: var(--color-peacock-50);
+  --color-leaf-100: var(--color-peacock-100);
+  --color-leaf-500: var(--color-peacock-500);
+  --color-leaf-600: var(--color-peacock-600);
+  --color-leaf-700: var(--color-peacock-700);
 
-  --shadow-card: 0 1px 0 rgba(29, 26, 22, 0.04), 0 8px 24px -12px rgba(60, 40, 10, 0.2);
-  --shadow-lift: 0 2px 0 rgba(29, 26, 22, 0.05), 0 18px 40px -16px rgba(60, 40, 10, 0.35);
+  --shadow-card: 0 1px 0 rgba(35, 25, 18, 0.06), 0 1px 2px rgba(35, 25, 18, 0.04);
+  --shadow-lift: 0 1px 0 rgba(35, 25, 18, 0.06), 0 14px 30px -18px rgba(70, 35, 10, 0.45);
+  --shadow-slip: 2px 3px 0 rgba(35, 25, 18, 0.08), 0 18px 40px -22px rgba(70, 35, 10, 0.5);
 
-  --animate-rise: rise 0.7s cubic-bezier(0.2, 0.7, 0.2, 1) both;
-  --animate-float: float 7s ease-in-out infinite;
-  @keyframes rise { from { opacity: 0; transform: translateY(14px);} to { opacity: 1; transform: none; } }
-  @keyframes float { 0%,100% { transform: translateY(0);} 50% { transform: translateY(-10px);} }
+  --animate-rise: rise 0.8s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+  @keyframes rise { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
 }
 
 html { scroll-behavior: smooth; }
 body {
-  background: var(--color-cream-50);
   color: var(--color-ink);
   font-family: var(--font-sans);
+  font-size: 1.0625rem;
   -webkit-font-smoothing: antialiased;
+  background-color: var(--color-paper-100);
+  /* handmade-paper grain */
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .35 0 0 0 0 .25 0 0 0 0 .12 0 0 0 .07 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
 }
-::selection { background: var(--color-marigold-300); }
+/* Devanagari must never be letter-spaced; and Hindi UI hides the decorative Hindi echo */
+html[lang="hi"] [class*="tracking-"] { letter-spacing: 0 !important; text-transform: none !important; }
+html[lang="hi"] .deva-accent { display: none !important; }
+::selection { background: var(--color-haldi-200); color: var(--color-ink); }
+.font-display { font-variant-numeric: lining-nums; }
+.num { font-variant-numeric: lining-nums tabular-nums; }
 
-/* Jali (lattice) pattern, drawn with an SVG data URI */
-.pattern-jali {
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='56' height='56' viewBox='0 0 56 56'%3E%3Cg fill='none' stroke='%23f7bd3a' stroke-opacity='.16' stroke-width='1'%3E%3Cpath d='M28 4 52 28 28 52 4 28Z'/%3E%3Ccircle cx='28' cy='28' r='9'/%3E%3Cpath d='M28 19v18M19 28h18'/%3E%3C/g%3E%3C/svg%3E");
+/* ── Leheriya: Rajasthani diagonal tie-dye stripes ── */
+.leheriya {
+  background: repeating-linear-gradient(-45deg,
+    var(--color-sindoor-500) 0 6px, var(--color-haldi-400) 6px 12px,
+    var(--color-paper-50) 12px 15px, var(--color-neel-700) 15px 21px,
+    var(--color-haldi-400) 21px 27px, var(--color-paper-50) 27px 30px);
 }
-.pattern-jali-light {
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='56' height='56' viewBox='0 0 56 56'%3E%3Cg fill='none' stroke='%23d4840a' stroke-opacity='.14' stroke-width='1'%3E%3Cpath d='M28 4 52 28 28 52 4 28Z'/%3E%3Ccircle cx='28' cy='28' r='9'/%3E%3C/g%3E%3C/svg%3E");
+.leheriya-soft {
+  background: repeating-linear-gradient(-45deg,
+    rgba(176,40,31,.07) 0 10px, rgba(224,168,43,.10) 10px 20px, transparent 20px 30px);
 }
-.arch { border-radius: 999px 999px 18px 18px; }
+
+/* ── Bandhani: tie-dye dot field ── */
 .bandhani {
-  background-image: radial-gradient(circle at 50% 50%, rgba(255,255,255,.28) 0 2px, transparent 2.5px);
-  background-size: 14px 14px;
-}
-.border-scallop {
-  height: 14px;
-  background:
-    radial-gradient(circle at 10px 0, transparent 9px, var(--scallop, #fffbf3) 9.5px) 0 0 / 20px 14px repeat-x;
+  background-image:
+    radial-gradient(circle at 50% 50%, rgba(255,232,190,.20) 0 1.5px, transparent 2.1px),
+    radial-gradient(circle at 50% 50%, rgba(255,232,190,.09) 0 1.1px, transparent 1.7px);
+  background-size: 18px 18px, 18px 18px;
+  background-position: 0 0, 9px 9px;
 }
 
+/* ── Bahi-khata ledger page: ruled lines + red double margin ── */
+.ledger {
+  background-color: var(--color-paper-50);
+  background-image:
+    linear-gradient(to right, transparent 34px, rgba(176,40,31,.38) 34px 35px, transparent 35px 38px, rgba(176,40,31,.38) 38px 39px, transparent 39px),
+    repeating-linear-gradient(to bottom, transparent 0 31px, rgba(59,74,120,.09) 31px 32px);
+}
+.ledger-lines {
+  background-image: repeating-linear-gradient(to bottom, transparent 0 31px, rgba(59,74,120,.09) 31px 32px);
+}
+
+/* dotted leader used in ledger rows */
+.leader { flex: 1; border-bottom: 1.5px dotted var(--color-paper-300); transform: translateY(-5px); min-width: 1rem; }
+
+/* ── Forms ── */
 .field {
   width: 100%;
-  border-radius: 0.9rem;
-  border: 1.5px solid var(--color-line);
-  background: #fff;
-  padding: 0.7rem 0.9rem;
+  border-radius: 3px;
+  border: 1px solid var(--color-line);
+  background: var(--color-paper-50);
+  padding: 0.7rem 0.85rem;
   font-size: 1rem;
   color: var(--color-ink);
-  transition: border-color .15s, box-shadow .15s;
+  transition: border-color .15s, box-shadow .15s, background .15s;
 }
-.field:focus { outline: none; border-color: var(--color-indigo-500); box-shadow: 0 0 0 4px rgba(74, 82, 196, .15); }
+.field::placeholder { color: var(--color-ink-faint); }
+.field:hover { border-color: var(--color-paper-300); }
+.field:focus { outline: none; border-color: var(--color-sindoor-500); background: #fff; box-shadow: 0 0 0 3px rgba(176,40,31,.12); }
 textarea.field { min-height: 6rem; resize: vertical; }
+select.field {
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1.5 6 6.5l5-5' fill='none' stroke='%236a5848' stroke-width='1.5'/%3E%3C/svg%3E");
+  background-repeat: no-repeat; background-position: right .85rem center; padding-right: 2.2rem;
+}
 
 .chip input { position: absolute; opacity: 0; pointer-events: none; }
 .chip span {
-  display: inline-flex; align-items: center; gap: .4rem;
-  border: 1.5px solid var(--color-line); background: #fff; color: var(--color-ink-soft);
-  border-radius: 999px; padding: .45rem .9rem; font-size: .92rem; font-weight: 500;
+  display: inline-flex; align-items: center; gap: .45rem;
+  border: 1px solid var(--color-line); background: var(--color-paper-50); color: var(--color-ink-soft);
+  border-radius: 3px; padding: .4rem .8rem; font-size: .95rem; font-weight: 500;
   cursor: pointer; transition: all .15s; user-select: none;
 }
-.chip span:hover { border-color: var(--color-indigo-500); }
+.chip span:hover { border-color: var(--color-ink-soft); color: var(--color-ink); }
 .chip input:checked + span {
-  background: var(--color-indigo-800); border-color: var(--color-indigo-800); color: #fff;
-  box-shadow: 0 6px 14px -8px rgba(30,35,102,.8);
+  background: var(--color-ink); border-color: var(--color-ink); color: var(--color-paper-50);
 }
-.chip input:focus-visible + span { outline: 3px solid var(--color-marigold-400); outline-offset: 2px; }
+.chip input:focus-visible + span { outline: 2px solid var(--color-haldi-400); outline-offset: 2px; }
 
 .tile input { position: absolute; opacity: 0; pointer-events: none; }
 .tile > span {
-  display: block; height: 100%; border: 2px solid var(--color-line); background: #fff; border-radius: 1.2rem;
-  padding: 1rem; cursor: pointer; transition: all .15s;
+  position: relative; display: block; height: 100%; border: 1px solid var(--color-line); background: var(--color-paper-50);
+  border-radius: 3px; padding: 1rem 1.1rem; cursor: pointer; transition: all .15s;
 }
-.tile > span:hover { border-color: var(--color-marigold-500); transform: translateY(-2px); }
-.tile input:checked + span { border-color: var(--color-indigo-700); background: var(--color-indigo-50); box-shadow: 0 0 0 3px rgba(74,82,196,.18); }
-.tile input:focus-visible + span { outline: 3px solid var(--color-marigold-400); outline-offset: 2px; }
+.tile > span:hover { border-color: var(--color-ink-soft); }
+.tile input:checked + span { border-color: var(--color-sindoor-500); background: #fff; box-shadow: inset 4px 0 0 var(--color-sindoor-500); }
+.tile input:focus-visible + span { outline: 2px solid var(--color-haldi-400); outline-offset: 2px; }
+
+/* subtle press for slips */
+.slip { transition: transform .25s cubic-bezier(.2,.7,.2,1), box-shadow .25s; }
+.slip:hover { transform: translateY(-3px) rotate(-.25deg); box-shadow: var(--shadow-slip); }
 
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation: none !important; transition: none !important; scroll-behavior: auto !important; }
