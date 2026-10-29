@@ -7,7 +7,8 @@
     "build": "next build",
     "start": "next start",
     "seed": "tsx scripts/seed.ts",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "e2e": "node e2e/flow.cjs"
   },
   "dependencies": {
     "@clerk/nextjs": "^7.9.22",

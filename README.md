@@ -40,6 +40,15 @@ On first run (bypass mode) the SQLite database at `data/app.db` is created and s
 * **Safety loop:** report → admin review → resolve/remove listing; moderated reviews; no candidate fees.
 * **Pilot metrics:** interview rate, hires, 30/90-day retention, listing accuracy, complaints.
 
+## Testing
+
+`e2e/flow.cjs` drives the whole product in a browser (candidate sign-up → apply → report; employer status update and job posting with validation; admin verification; feedback; mobile + Hindi). With a fresh DB and the server running (`npm run build && npm start -p 3100`), run `NODE_PATH=$(npm root -g) npm run e2e` (needs Playwright installed globally).
+Clerk mode was smoke-tested with placeholder keys: public pages render, `/dev-login` returns 404, and `/candidate`, `/employer/*`, `/admin` redirect to Clerk sign-in.
+
+## Deploying
+
+The app installs as a PWA (`/manifest.webmanifest`). Data lives in a SQLite file (`DATABASE_PATH`, default `data/app.db`), so deploy to a host with a persistent disk (Fly.io, Railway, a VPS). Serverless hosts such as Vercel have no persistent disk; move `lib/db.ts` to a hosted database (Postgres/Turso) before deploying there. In production, set `AUTH_BYPASS=false`, add the Clerk keys and `ADMIN_EMAILS`, and run `npm run seed` only if you want demo data.
+
 ## Scripts
 
 `npm run dev` · `npm run build` · `npm start` · `npm run seed` · `npm run typecheck`
