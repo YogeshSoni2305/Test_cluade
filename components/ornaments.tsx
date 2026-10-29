@@ -29,7 +29,7 @@ export function Stamp({ size = 92, label = "VERIFIED", sub = "सत्याप
         <circle cx="50" cy="50" r="46" strokeWidth="2.6" />
         <circle cx="50" cy="50" r="41" strokeWidth=".9" />
         <circle cx="50" cy="50" r="27" strokeWidth=".9" />
-        <text fill="currentColor" stroke="none" fontSize="8.4" fontWeight="700" letterSpacing="1.3" fontFamily="Mukta, sans-serif">
+        <text fill="currentColor" stroke="none" fontSize="8.4" fontWeight="600" letterSpacing="1.3" fontFamily="'Tiro Devanagari Hindi', Mukta, sans-serif">
           <textPath href="#stamp-arc">{text}</textPath>
         </text>
         <path d="m39 51 7.5 7.5L62 42" strokeWidth="4.2" strokeLinecap="round" strokeLinejoin="round" />

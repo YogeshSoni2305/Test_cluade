@@ -10,6 +10,16 @@ import { ICheck, IndustryIcon, IPin, IStar } from "@/components/icons";
 
 export const dynamic = "force-dynamic";
 
+export async function generateMetadata({ params }: { params: Promise<{ id: string }> }) {
+  const emp = getEmployer(Number((await params).id));
+  if (!emp || emp.verification_status === "rejected") return { title: "Business not found", robots: { index: false } };
+  return {
+    title: `${emp.business_name}, ${emp.city} — jobs & verification`,
+    description: `${emp.business_name} (${emp.city}) on Rajasthan Kaam: open positions, what was verified, and reviews from workers.`,
+    alternates: { canonical: `/employers/${emp.id}` },
+  };
+}
+
 export default async function EmployerPublic({ params }: { params: Promise<{ id: string }> }) {
   const emp = getEmployer(Number((await params).id));
   if (!emp || emp.verification_status === "rejected") notFound();
@@ -34,11 +44,11 @@ export default async function EmployerPublic({ params }: { params: Promise<{ id:
             <h1 className="mt-2 font-display text-[3rem] font-medium leading-none tracking-[-0.015em] text-ink sm:text-[4rem]">{emp.business_name}</h1>
             <p className="mt-4 flex flex-wrap items-center gap-x-5 gap-y-1 text-ink-soft">
               <span className="inline-flex items-center gap-1.5"><IPin size={17} className="text-sindoor-500" />{emp.city}</span>
-              {emp.years_in_business ? <span>{emp.years_in_business} years in business</span> : null}
-              {emp.staff_count ? <span>{emp.staff_count} staff</span> : null}
-              {rating.count > 0 && <span className="inline-flex items-center gap-1 text-haldi-700"><IStar filled size={16} />{rating.avg.toFixed(1)} · {rating.count} reviews</span>}
+              {emp.years_in_business ? <span>{emp.years_in_business} {t("emp_years_in_business")}</span> : null}
+              {emp.staff_count ? <span>{emp.staff_count} {t("emp_staff")}</span> : null}
+              {rating.count > 0 && <span className="inline-flex items-center gap-1 text-haldi-700"><IStar filled size={16} />{rating.avg.toFixed(1)} · {rating.count} {t("emp_reviews")}</span>}
             </p>
-            {emp.origin_district && <p className="mt-2 font-semibold text-sindoor-700">Owner’s family is from {emp.origin_district}, Rajasthan</p>}
+            {emp.origin_district && <p className="mt-2 font-semibold text-sindoor-700">{t("emp_origin")} {emp.origin_district}, Rajasthan</p>}
           </div>
           {verified ? <Stamp size={130} className="-rotate-12" /> : <span className="border border-dashed border-ink-faint px-3 py-1 text-[0.8rem] font-semibold uppercase tracking-wider text-ink-faint">{t("not_verified")}</span>}
         </div>
@@ -47,13 +57,13 @@ export default async function EmployerPublic({ params }: { params: Promise<{ id:
       <div className="mx-auto mt-12 grid max-w-6xl gap-12 px-4 sm:px-6 lg:grid-cols-[1fr_20rem]">
         <div>
           {emp.about && <p className="font-display text-[1.5rem] italic leading-snug text-ink">{emp.about}</p>}
-          <h2 className="mt-12 font-display text-[2rem] font-semibold text-ink">{jobs.length} open {jobs.length === 1 ? "position" : "positions"}</h2>
+          <h2 className="mt-12 font-display text-[2rem] font-semibold text-ink">{jobs.length} {t("open_positions")}</h2>
           <div className="mt-6 grid gap-6 md:grid-cols-2">
             {jobs.map((j) => <JobCard key={j.id} job={j} lang={lang} t={t} />)}
           </div>
           {reviews.length > 0 && (
             <>
-              <h2 className="mt-14 font-display text-[2rem] font-semibold text-ink">What workers say</h2>
+              <h2 className="mt-14 font-display text-[2rem] font-semibold text-ink">{t("emp_workers_say")}</h2>
               <ul className="mt-5 divide-y divide-line border-y border-line">
                 {reviews.map((r, i) => (
                   <li key={i} className="py-5">
@@ -62,7 +72,7 @@ export default async function EmployerPublic({ params }: { params: Promise<{ id:
                   </li>
                 ))}
               </ul>
-              <p className="mt-3 text-[0.85rem] text-ink-soft">Reviews are moderated and anonymous.</p>
+              <p className="mt-3 text-[0.85rem] text-ink-soft">{t("emp_reviews_note")}</p>
             </>
           )}
         </div>
@@ -79,7 +89,7 @@ export default async function EmployerPublic({ params }: { params: Promise<{ id:
               );
             })}
           </ul>
-          {emp.verified_at && <p className="mt-4 text-[0.82rem] text-ink-soft">Last verified {emp.verified_at.slice(0, 10)}</p>}
+          {emp.verified_at && <p className="mt-4 text-[0.82rem] text-ink-soft">{t("emp_last_verified")} {emp.verified_at.slice(0, 10)}</p>}
         </aside>
       </div>
     </div>

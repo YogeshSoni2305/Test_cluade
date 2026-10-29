@@ -11,14 +11,13 @@ import { IHeart, IndustryIcon, IPin } from "./icons";
 export function JobCard({ job, lang, t, saved }: { job: Job; lang: Lang; t: (k: Key) => string; saved?: boolean }) {
   const ind = byId(INDUSTRIES, job.industry);
   const per = job.salary_period === "day" ? (lang === "hi" ? "दिन" : "day") : job.salary_period === "week" ? (lang === "hi" ? "सप्ताह" : "week") : (lang === "hi" ? "माह" : "month");
-  const skills = job.skills_offered.slice(0, 3).map((id) => skillLabel(job.industry, id)?.en).filter(Boolean);
+  const skills = job.skills_offered.slice(0, 3).map((id) => bi(skillLabel(job.industry, id), lang)).filter(Boolean);
   const noDed = /^no\b/i.test(job.deductions.trim()) && !job.deposit_amount;
   const verified = job.verification_status === "verified";
 
   const Row = ({ k, children, strong }: { k: string; children: React.ReactNode; strong?: boolean }) => (
     <div className="flex h-8 items-end gap-2 text-[0.95rem]">
-      <dt className="shrink-0 text-ink-soft">{k}</dt>
-      <span className="leader" />
+      <dt className="flex min-w-0 flex-1 items-end gap-2 text-ink-soft"><span className="shrink-0">{k}</span><span className="leader" aria-hidden /></dt>
       <dd className={cx("shrink-0 text-right", strong ? "font-semibold text-ink" : "text-ink")}>{children}</dd>
     </div>
   );

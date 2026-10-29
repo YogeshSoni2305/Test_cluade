@@ -5,25 +5,31 @@ import { setLang, devLogout } from "@/app/actions";
 import { btn, cx } from "./ui";
 import { Seal } from "./ornaments";
 import { UserMenuClerk } from "./UserMenuClerk";
+import { IBell, IChat, IUser } from "./icons";
+import { unreadCount, unreadMessages } from "@/lib/notify";
 
 export async function Header() {
   const { t, lang } = await getI18n();
   const user = await getCurrentUser();
   const dash = user?.role === "employer" ? "/employer" : user?.role === "admin" ? "/admin" : "/candidate";
+  const counts = user ? { msgs: unreadMessages(user.id), notes: unreadCount(user.id) } : null;
+  const iconLink = "relative flex h-9 w-9 items-center justify-center rounded-[3px] text-ink-soft transition hover:bg-paper-200/70 hover:text-ink";
+  const badge = (n: number) => n > 0 && <span aria-hidden className="absolute -right-0.5 -top-0.5 min-w-[1.1rem] rounded-full bg-sindoor-600 px-1 text-center text-[0.68rem] font-bold leading-[1.1rem] text-paper-50">{n > 9 ? "9+" : n}</span>;
+  const label = (text: string, n: number) => <span className="sr-only">{text}{n ? ` (${n})` : ""}</span>;
   const nav = [["/jobs", t("nav_jobs")], ["/employer", t("nav_employers")], ["/safety", t("nav_safety")]];
 
   return (
     <>
-      <div className="leheriya h-[5px]" />
+      <div className="leheriya h-[5px] print:hidden" />
       {BYPASS && (
-        <div className="bg-ink px-4 py-1.5 text-center text-[0.8rem] text-paper-200">
+        <div className="bg-ink px-4 py-1.5 text-center text-[0.8rem] text-paper-200 print:hidden">
           <span className="mr-2 inline-block rounded-[2px] bg-haldi-400 px-1.5 text-[0.7rem] font-bold uppercase tracking-wider text-ink">Demo</span>
           Auth bypass is on.{" "}
           <Link href="/dev-login" className="font-semibold text-haldi-300 underline decoration-haldi-300/40 underline-offset-2 hover:decoration-haldi-300">Switch user</Link>
           {user && <span className="text-paper-300/70"> · {user.name} ({user.role ?? "no role"})</span>}
         </div>
       )}
-      <header className="sticky top-0 z-40 border-b border-line bg-paper-100/90 backdrop-blur-md">
+      <header className="sticky top-0 z-40 print:hidden border-b border-line bg-paper-100/90 backdrop-blur-md">
         <div className="mx-auto flex max-w-6xl items-center gap-4 px-4 py-3 sm:px-6">
           <Link href="/" className="group flex min-w-0 items-center gap-3">
             <span className="shrink-0 transition group-hover:-rotate-3"><Seal size={38} /></span>
@@ -33,7 +39,7 @@ export async function Header() {
             </span>
           </Link>
 
-          <nav className="ml-8 hidden items-center gap-7 text-[1rem] font-medium text-ink-soft md:flex">
+          <nav aria-label="Main" className="ml-8 hidden items-center gap-7 text-[1rem] font-medium text-ink-soft md:flex">
             {nav.map(([href, label]) => (
               <Link key={href} href={href} className="relative py-1 transition hover:text-ink after:absolute after:inset-x-0 after:-bottom-0.5 after:h-px after:origin-left after:scale-x-0 after:bg-sindoor-500 after:transition hover:after:scale-x-100">{label}</Link>
             ))}
@@ -42,15 +48,20 @@ export async function Header() {
           <div className="ml-auto flex shrink-0 items-center gap-2">
             <form action={setLang} className="flex overflow-hidden rounded-[3px] border border-line text-[0.85rem] font-semibold">
               <input type="hidden" name="next" value="/" />
-              <button name="lang" value="en" aria-label="English" className={cx("px-2.5 py-1", lang === "en" ? "bg-ink text-paper-50" : "text-ink-soft hover:text-ink")}>EN</button>
-              <button name="lang" value="hi" aria-label="हिन्दी" className={cx("px-2.5 py-1 font-deva", lang === "hi" ? "bg-ink text-paper-50" : "text-ink-soft hover:text-ink")}>हिं</button>
+              <button name="lang" value="en" aria-pressed={lang === "en"} title="English" className={cx("px-2.5 py-1", lang === "en" ? "bg-ink text-paper-50" : "text-ink-soft hover:text-ink")}><span aria-hidden>EN</span><span className="sr-only">English</span></button>
+              <button name="lang" value="hi" aria-pressed={lang === "hi"} title="हिन्दी" lang="hi" className={cx("px-2.5 py-1 font-deva", lang === "hi" ? "bg-ink text-paper-50" : "text-ink-soft hover:text-ink")}><span aria-hidden>हिं</span><span className="sr-only">हिन्दी</span></button>
             </form>
             {user ? (
               <>
+                {user.role !== "admin" && (
+                  <Link href="/messages" className={iconLink} title={t("nav_messages")}><IChat size={20} />{label(t("nav_messages"), counts!.msgs)}{badge(counts!.msgs)}</Link>
+                )}
+                <Link href="/notifications" className={iconLink} title={t("nav_notifications")}><IBell size={20} />{label(t("nav_notifications"), counts!.notes)}{badge(counts!.notes)}</Link>
+                <Link href="/account" className={cx(iconLink, "max-sm:hidden")} title={t("nav_account")}><IUser size={20} />{label(t("nav_account"), 0)}</Link>
                 <Link href={dash} className={btn("outline", "sm", "max-sm:hidden")}>{t("nav_dashboard")}</Link>
                 {user.role === "admin" && <Link href="/admin" className={btn("ghost", "sm", "max-lg:hidden")}>{t("nav_admin")}</Link>}
                 {BYPASS ? (
-                  <form action={devLogout}><button className={btn("ghost", "sm")}>{t("nav_signout")}</button></form>
+                  <form action={devLogout} className="max-md:hidden"><button className={btn("ghost", "sm")}>{t("nav_signout")}</button></form>
                 ) : (
                   <UserMenuClerk />
                 )}
@@ -63,9 +74,10 @@ export async function Header() {
             )}
           </div>
         </div>
-        <nav className="flex gap-5 overflow-x-auto border-t border-line px-4 py-2 text-[0.95rem] font-medium text-ink-soft md:hidden">
+        <nav aria-label="Main (mobile)" className="flex gap-5 overflow-x-auto border-t border-line px-4 py-2 text-[0.95rem] font-medium text-ink-soft md:hidden">
           {nav.map(([href, label]) => <Link key={href} href={href} className="shrink-0">{label}</Link>)}
           {user && <Link href={dash} className="shrink-0 text-sindoor-600">{t("nav_dashboard")}</Link>}
+          {user && <Link href="/account" className="shrink-0">{t("nav_account")}</Link>}
         </nav>
       </header>
     </>

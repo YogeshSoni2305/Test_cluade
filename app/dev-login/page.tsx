@@ -1,4 +1,5 @@
 import { notFound } from "next/navigation";
+import { HumanCheck } from "@/components/HumanCheck";
 import { BYPASS, getCurrentUser } from "@/lib/auth";
 import { getDb } from "@/lib/db";
 import { devCreate, devLogin } from "@/app/actions";
@@ -11,7 +12,7 @@ export const metadata = { title: "Demo login" };
 
 type U = { id: number; name: string; role: string | null; phone: string | null; extra: string | null };
 
-export default async function DevLogin({ searchParams }: { searchParams: Promise<{ signup?: string; next?: string }> }) {
+export default async function DevLogin({ searchParams }: { searchParams: Promise<{ signup?: string; next?: string; error?: string }> }) {
   if (!BYPASS) notFound();
   const sp = await searchParams;
   const me = await getCurrentUser();
@@ -33,6 +34,7 @@ export default async function DevLogin({ searchParams }: { searchParams: Promise
       </Notice>
       <p className="mt-10 font-deva text-lg text-sindoor-600">डेमो लॉगिन</p>
       <h1 className="font-display text-[3rem] font-medium leading-none text-ink">{sp.signup ? "Create a test account" : "Choose a demo user"}</h1>
+      {sp.error && <div className="mt-4"><Notice tone="bad">{sp.error}</Notice></div>}
       {me && <p className="mt-3 text-ink-soft">Signed in as <b className="text-ink">{me.name}</b> ({me.role ?? "no role"}).</p>}
       <Ornament className="mt-7" />
 
@@ -68,6 +70,7 @@ export default async function DevLogin({ searchParams }: { searchParams: Promise
             <h2 className="font-display text-[1.6rem] font-semibold text-ink">New test account</h2>
             <p className="mt-1 text-ink-soft">Try onboarding from scratch.</p>
             <form action={devCreate} className="mt-6 space-y-4">
+              <HumanCheck />
               <Field label="Name"><input name="name" className="field" required placeholder="e.g. Suresh Kumar" /></Field>
               <Field label="Mobile number"><input name="phone" className="field" inputMode="tel" placeholder="+91 …" /></Field>
               <div>

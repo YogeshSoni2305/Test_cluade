@@ -146,7 +146,7 @@ export function SectionTitle({
     <div className={cx("max-w-2xl", center && "mx-auto text-center")}>
       {(kicker || deva) && (
         <p className={cx("mb-4 flex items-baseline gap-3 text-[0.8rem] font-semibold uppercase tracking-[0.22em]", center && "justify-center", light ? "text-haldi-300" : "text-sindoor-600")}>
-          {deva && <span className="font-deva text-[1.05rem] normal-case tracking-normal">{deva}</span>}
+          {deva && <span lang="hi" className="font-deva text-[1.05rem] normal-case tracking-normal">{deva}</span>}
           {deva && kicker && <span className="deva-accent opacity-50">·</span>}
           {kicker && <span className="deva-accent">{kicker}</span>}
         </p>
@@ -162,7 +162,7 @@ export function PageHeader({ title, sub, actions, deva }: { title: string; sub?:
     <div className="mb-10">
       <div className="flex flex-wrap items-end justify-between gap-4">
         <div className="min-w-0">
-          {deva && <p className="mb-1 font-deva text-lg text-sindoor-600">{deva}</p>}
+          {deva && <p lang="hi" className="mb-1 font-deva text-lg text-sindoor-600">{deva}</p>}
           <h1 className="font-display text-[2.4rem] font-medium leading-[1.05] tracking-[-0.01em] text-ink sm:text-[2.9rem]">{title}</h1>
           {sub && <p className="mt-2 max-w-2xl text-ink-soft">{sub}</p>}
         </div>

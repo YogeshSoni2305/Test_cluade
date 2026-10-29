@@ -4,10 +4,11 @@ import { requireUser } from "@/lib/auth";
 import { getDb } from "@/lib/db";
 import { submitFeedback } from "@/app/actions";
 import { IArrowLeft } from "@/components/icons";
-import { btn, Card, Chips, Field, Notice, PageHeader } from "@/components/ui";
+import { btn, Card, Chips, Field, FieldGroup, Notice, PageHeader } from "@/components/ui";
+import { getI18n } from "@/lib/i18n";
 
 export const dynamic = "force-dynamic";
-export const metadata = { title: "Share feedback" };
+export const metadata = { title: "Share feedback", robots: { index: false } };
 
 export default async function FeedbackPage({ params, searchParams }: { params: Promise<{ applicationId: string }>; searchParams: Promise<Record<string, string | undefined>> }) {
   const user = await requireUser();
@@ -24,36 +25,36 @@ export default async function FeedbackPage({ params, searchParams }: { params: P
   const existing = getDb().prepare("SELECT * FROM feedback WHERE application_id=? AND from_role=?").get(id, role) as { rating: number; comment: string } | undefined;
   const subject = role === "candidate" ? row.business_name : row.candidate_name;
 
+  const { t } = await getI18n();
+  const cp = ["30d", "90d"].includes(sp.checkpoint ?? "") ? sp.checkpoint! : "joined";
+  const yesNo = [{ value: "yes", label: t("sp_yes") }, { value: "no", label: t("sp_no") }];
+
   return (
     <div className="mx-auto max-w-2xl px-4 py-10 sm:px-6">
-      <Link href={back} className="mb-6 inline-flex items-center gap-1.5 text-[0.95rem] font-semibold text-ink-soft hover:text-sindoor-700"><IArrowLeft size={16} />Back</Link>
-      <PageHeader deva="अनुभव बताइए" title="How is it going?" sub={`${row.title} · ${role === "candidate" ? row.business_name : row.candidate_name}`} />
-      {sp.thanks && <div className="mb-6"><Notice tone="ok">Thank you — your feedback helps keep listings honest.</Notice></div>}
+      <Link href={back} className="mb-6 inline-flex items-center gap-1.5 text-[0.95rem] font-semibold text-ink-soft hover:text-sindoor-700"><IArrowLeft size={16} />{t("sp_back")}</Link>
+      <PageHeader deva="अनुभव बताइए" title={t("fb_title")} sub={`${row.title} · ${subject}`} />
+      {sp.thanks && <div className="mb-6"><Notice tone="ok">{t("fb_thanks")}</Notice></div>}
       {sp.error && <div className="mb-6"><Notice tone="bad">{sp.error}</Notice></div>}
       <Card className="p-6">
         <form action={submitFeedback} className="space-y-6">
           <input type="hidden" name="application_id" value={id} />
-          <div>
-            <p className="mb-2 text-sm font-semibold">Overall rating for {subject}</p>
-            <Chips type="radio" name="rating" selected={existing ? [String(existing.rating)] : []} options={[5, 4, 3, 2, 1].map((n) => ({ value: String(n), label: `${"★".repeat(n)}` }))} />
-          </div>
-          <div>
-            <p className="mb-2 text-sm font-semibold">{role === "candidate" ? "Do the pay, hours and stay match the listing?" : "Did the candidate match what they described?"}</p>
-            <Chips type="radio" name="terms_matched" options={[{ value: "yes", label: "Yes" }, { value: "no", label: "No" }]} />
-          </div>
-          <div>
-            <p className="mb-2 text-sm font-semibold">Are they still working there?</p>
-            <Chips type="radio" name="still_working" options={[{ value: "yes", label: "Yes" }, { value: "no", label: "No" }]} />
-          </div>
-          <div>
-            <p className="mb-2 text-sm font-semibold">Check-in</p>
-            <Chips type="radio" name="checkpoint" selected={["joined"]} options={[{ value: "joined", label: "Just joined" }, { value: "30d", label: "After 30 days" }, { value: "90d", label: "After 90 days" }]} />
-          </div>
-          <Field label="Comments (optional)" hint="Be factual and respectful. Reviews are moderated.">
-            <textarea name="comment" className="field" defaultValue={existing?.comment} />
+          <FieldGroup label={`${t("fb_rating")} ${subject}`}>
+            <Chips type="radio" name="rating" selected={existing ? [String(existing.rating)] : []} options={[5, 4, 3, 2, 1].map((n) => ({ value: String(n), label: `${"★".repeat(n)} ${n}` }))} />
+          </FieldGroup>
+          <FieldGroup label={role === "candidate" ? t("fb_terms_candidate") : t("fb_terms_employer")}>
+            <Chips type="radio" name="terms_matched" options={yesNo} />
+          </FieldGroup>
+          <FieldGroup label={role === "candidate" ? t("fb_still_candidate") : t("fb_still_employer")}>
+            <Chips type="radio" name="still_working" options={yesNo} />
+          </FieldGroup>
+          <FieldGroup label={t("fb_checkpoint")}>
+            <Chips type="radio" name="checkpoint" selected={[cp]} options={[{ value: "joined", label: t("fb_cp_joined") }, { value: "30d", label: t("fb_cp_30") }, { value: "90d", label: t("fb_cp_90") }]} />
+          </FieldGroup>
+          <Field label={t("fb_comment")} hint={t("fb_comment_hint")}>
+            <textarea name="comment" maxLength={2000} className="field" defaultValue={existing?.comment} />
           </Field>
-          {role === "candidate" && <p className="text-xs text-ink-soft">If you have a serious problem (unpaid wages, harassment), please use “Report this listing” on the job page so our team can act.</p>}
-          <button className={btn("gold", "lg")}>Submit feedback</button>
+          {role === "candidate" && <p className="text-[0.88rem] text-ink-soft">{t("fb_serious")}</p>}
+          <button className={btn("primary", "lg")}>{t("fb_submit")}</button>
         </form>
       </Card>
     </div>

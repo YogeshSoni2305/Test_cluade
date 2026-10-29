@@ -1,4 +1,5 @@
 import Link from "next/link";
+import type { Metadata } from "next";
 import { getI18n, bi } from "@/lib/i18n";
 import { CITIES, GOALS, INDUSTRIES, byId, EXPERIENCE_REQ } from "@/lib/constants";
 import { searchJobs } from "@/lib/queries";
@@ -8,9 +9,27 @@ import { Ornament } from "@/components/ornaments";
 import { GoalIcon, ISearch } from "@/components/icons";
 import { getCurrentUser } from "@/lib/auth";
 import { getDb } from "@/lib/db";
+import { createAlert } from "@/app/_actions/alerts";
+import { describeAlert } from "@/lib/alerts";
+import { Notice } from "@/components/ui";
+import { IBell } from "@/components/icons";
 
 export const dynamic = "force-dynamic";
-export const metadata = { title: "Find work" };
+export async function generateMetadata({ searchParams }: { searchParams: Promise<SP> }): Promise<Metadata> {
+  const sp = await searchParams;
+  const ind = byId(INDUSTRIES, one(sp.industry));
+  const city = CITIES.includes(one(sp.city)) ? one(sp.city) : "";
+  const what = ind ? `${ind.en} jobs` : "Jobs";
+  const title = `${what}${city ? ` in ${city}` : " across India"} for people from Rajasthan`;
+  const canonical = ind || city ? `/jobs?${new URLSearchParams([...(ind ? [["industry", ind.id]] : []), ...(city ? [["city", city]] : [])])}` : "/jobs";
+  const filtered = Object.keys(sp).some((k) => !["industry", "city"].includes(k));
+  return {
+    title,
+    description: `${title}. Every listing shows salary, hours, weekly holiday, accommodation, deductions and what you can learn. Free for candidates.`,
+    alternates: { canonical },
+    robots: filtered ? { index: false, follow: true } : undefined,
+  };
+}
 
 type SP = Record<string, string | string[] | undefined>;
 const one = (v: string | string[] | undefined) => (Array.isArray(v) ? v[0] : v) ?? "";
@@ -108,7 +127,7 @@ export default async function JobsPage({ searchParams }: { searchParams: Promise
         {activeGoal && (
           <p className="mt-4 inline-flex items-center gap-2 border-l-[3px] border-sindoor-500 bg-paper-50 py-2 pl-3 pr-4 text-[0.95rem] text-ink">
             <GoalIcon id={activeGoal.id} size={18} className="text-sindoor-600" />
-            <span>Showing what matters for: <b>{bi(activeGoal, lang)}</b></span>
+            <span>{t("jl_goal_for")} <b>{bi(activeGoal, lang)}</b></span>
           </p>
         )}
         <Ornament className="mt-7" />
@@ -127,6 +146,22 @@ export default async function JobsPage({ searchParams }: { searchParams: Promise
         </aside>
 
         <section>
+          {one(sp.alert) && <div className="mb-5"><Notice tone="ok">{t("alerts_created")} <Link href="/candidate/alerts" className="font-semibold underline">{t("alerts_manage")}</Link></Notice></div>}
+          {one(sp.error) && <div className="mb-5"><Notice tone="bad">{one(sp.error)}</Notice></div>}
+          <div className="mb-6 flex flex-wrap items-center justify-between gap-3 rounded-[3px] border border-dashed border-paper-300 px-4 py-3">
+            <p className="flex items-center gap-2 text-[0.95rem] text-ink-soft"><IBell size={18} className="text-sindoor-600" />{t("alerts_prompt")} <b className="text-ink">{describeAlert({ q: f.q, industry: f.industry, city: f.city, min_salary: f.minSalary, stay: f.stay, verified_only: f.verified ? 1 : 0 }, lang)}</b></p>
+            {user?.role === "candidate" ? (
+              <form action={createAlert}>
+                {(["q", "industry", "city", "stay"] as const).map((k) => f[k] ? <input key={k} type="hidden" name={k} value={f[k]} /> : null)}
+                {f.minSalary > 0 && <input type="hidden" name="minSalary" value={f.minSalary} />}
+                {f.verified && <input type="hidden" name="verified" value="1" />}
+                <input type="hidden" name="next" value={`/jobs?${new URLSearchParams(Object.entries(sp).flatMap(([k, v]) => (k === "alert" || k === "error" || !v ? [] : [[k, one(v)]]))).toString()}`} />
+                <button className={btn("outline", "sm")}>{t("alerts_notify_me")}</button>
+              </form>
+            ) : !user ? (
+              <Link href="/sign-up" className={btn("outline", "sm")}>{t("alerts_notify_me")}</Link>
+            ) : null}
+          </div>
           {jobs.length ? (
             <div className="grid gap-6 md:grid-cols-2">
               {jobs.map((j) => <JobCard key={j.id} job={j} lang={lang} t={t} saved={saved.has(j.id)} />)}
@@ -135,7 +170,7 @@ export default async function JobsPage({ searchParams }: { searchParams: Promise
             <Empty title={t("no_results")} sub={t("no_results_sub")} action={<Link className={btn("primary")} href="/jobs">{t("clear")}</Link>} />
           )}
           <p className="mt-10 border-t border-line pt-4 text-[0.88rem] leading-relaxed text-ink-soft">
-            Listings are ranked by trust and clarity (verification, how fully pay, hours, stay and deductions are disclosed) — not by salary alone. Switch the sort to compare by pay.
+            {t("jl_ranking")}
           </p>
         </section>
       </div>

@@ -1,4 +1,4 @@
-import { getDb } from "./db";
+import { getDb, normalizePhone } from "./db";
 
 type JobSeed = {
   emp: number; title: string; industry: string; locality: string; desc: string; resp: string;
@@ -22,6 +22,8 @@ export function seed() {
     const user = db.prepare("INSERT INTO users (role,name,phone,email) VALUES (?,?,?,?)");
     const admin = user.run("admin", "Platform Admin", "+919000000001", "admin@example.com").lastInsertRowid as number;
     void admin;
+    db.prepare("INSERT INTO users (role,name,phone,admin_role) VALUES ('admin','Verification Desk','+919000000002','verifier')").run();
+    db.prepare("INSERT INTO users (role,name,phone,admin_role) VALUES ('admin','Pilot Analyst','+919000000003','analyst')").run();
 
     // ---- employers ---------------------------------------------------
     const emps = [
@@ -218,6 +220,36 @@ export function seed() {
     db.prepare("INSERT INTO reports (job_id,employer_id,reporter_id,type,details,status,resolution,created_at) VALUES (?,?,?,?,?,?,?,datetime('now','-9 days'))")
       .run(jobIds[2], empIds[1], c1, "other", "Wanted to confirm the dorm location.", "resolved", "Confirmed with employer; address added to listing.");
     void a1; void a5;
+
+    // Hindi versions written by two employers
+    db.prepare("UPDATE jobs SET description_hi=?, responsibilities_hi=?, learning_notes_hi=? WHERE id=?").run(
+      "हमारे शोरूम में ट्रेनी के रूप में जुड़ें। शुरुआत ग्राहकों की मदद से होगी और धीरे-धीरे पूरा शोरूम चलाना सीखेंगे।",
+      "ग्राहकों का स्वागत और मदद, कपड़े तह करना और सजाना, बिलिंग काउंटर पर मदद, ट्रायल रूम साफ़ रखना, साइज़ और सामान की जानकारी सीखना।",
+      "6 महीने बाद ट्रेनी स्टॉक गिनती में मदद करते हैं; 12 महीने बाद सप्लायर से मिलते समय ख़रीद मैनेजर के साथ बैठते हैं। हर कोई ख़रीद में नहीं जाता — यह मेहनत और जगह पर निर्भर है।",
+      jobIds[0]);
+    db.prepare("UPDATE jobs SET description_hi=?, responsibilities_hi=? WHERE id=?").run(
+      "बड़े गारमेंट थोक व्यापारी की गोदाम और डिस्पैच टीम में काम।",
+      "कपड़े की गाँठें लेना और जाँचना, स्टॉक जमाना, ऑर्डर पैक करना, ट्रांसपोर्ट वालों से तालमेल।",
+      jobIds[2]);
+
+    // fields added by later migrations
+    const users = db.prepare("SELECT id, phone FROM users WHERE phone IS NOT NULL").all() as { id: number; phone: string }[];
+    for (const u of users) db.prepare("UPDATE users SET phone_norm=? WHERE id=?").run(normalizePhone(u.phone), u.id);
+    db.prepare("UPDATE jobs SET expires_at = datetime(created_at, '+30 days') WHERE expires_at IS NULL").run();
+    db.prepare("UPDATE employers SET gst_norm = gst_number WHERE gst_number IS NOT NULL").run();
+    // Mahendra and Pooja chose to share their numbers; Ravi talks through chat only
+    db.prepare("UPDATE applications SET share_phone = 1 WHERE candidate_id IN (?, ?)").run(c1, c3);
+    db.prepare("UPDATE candidate_profiles SET searchable = 1 WHERE user_id IN (?, ?)").run(c1, c3);
+    // a conversation so the inbox isn't empty in the demo
+    db.prepare("INSERT INTO messages (application_id, sender_id, body, created_at) VALUES (?,?,?,datetime('now','-1 days'))").run(a1, c1, "I helped in my father's shop and want to learn the business properly.");
+    db.prepare("INSERT INTO messages (application_id, sender_id, body, created_at) VALUES (?,?,?,datetime('now','-20 hours'))").run(a1, (db.prepare("SELECT user_id FROM employers WHERE id=?").get(empIds[0]) as { user_id: number }).user_id, "Namaste Mahendra. Can you come for a video interview on Saturday at 11?");
+    db.prepare("INSERT INTO messages (application_id, sender_id, body, kind, created_at) VALUES (?,NULL,'status:interview','system',datetime('now','-20 hours'))").run(a1);
+    // Pooja joined the furniture showroom 40 days ago — the 30-day check-in is due
+    db.prepare("UPDATE applications SET status='joined', joined_at=date('now','-40 days') WHERE id=?").run(a5);
+    db.prepare("INSERT INTO job_alerts (user_id, label, industry, city) VALUES (?, 'Men’s clothing in Surat', 'menswear', 'Surat')").run(c1);
+    // a few days of listing views for the analytics panels
+    const viewStmt = db.prepare("INSERT OR IGNORE INTO job_views (job_id, day, views) VALUES (?, date('now', ?), ?)");
+    jobIds.forEach((jid, i) => { for (let d = 0; d < 14; d++) viewStmt.run(jid, `-${d} days`, ((jid * 7 + d * 3 + i) % 9) + (d < 3 ? 4 : 1)); });
   });
   tx();
 }

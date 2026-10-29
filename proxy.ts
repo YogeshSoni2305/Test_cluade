@@ -4,7 +4,7 @@ import { clerkMiddleware, createRouteMatcher } from "@clerk/nextjs/server";
 const hasKeys = Boolean(process.env.CLERK_SECRET_KEY && process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY);
 const bypass = process.env.AUTH_BYPASS === "true" || !hasKeys;
 
-const isProtected = createRouteMatcher(["/candidate(.*)", "/admin(.*)", "/feedback(.*)", "/onboarding(.*)"]);
+const isProtected = createRouteMatcher(["/candidate(.*)", "/admin(.*)", "/feedback(.*)", "/onboarding(.*)", "/messages(.*)", "/notifications(.*)", "/account(.*)"]);
 // /employer is public (landing for employers); sub-pages require sign-in
 const isEmployerPrivate = createRouteMatcher(["/employer/(.+)"]);
 

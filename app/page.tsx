@@ -1,21 +1,29 @@
 import Link from "next/link";
 import { getI18n, bi } from "@/lib/i18n";
+import { jsonLdScript, siteUrl } from "@/lib/seo";
 import { GOALS, INDUSTRIES } from "@/lib/constants";
 import { searchJobs, siteStats } from "@/lib/queries";
 import { JobCard } from "@/components/JobCard";
-import { LinkButton, SectionTitle } from "@/components/ui";
+import { LinkButton, Notice, SectionTitle } from "@/components/ui";
 import { ButaBand, Jharokha, Ornament, Stamp, toDeva } from "@/components/ornaments";
 import { GoalIcon, IArrow, IndustryIcon, IPin, IPhone, IDoc, IShield } from "@/components/icons";
 
 export const dynamic = "force-dynamic";
 
-export default async function Home() {
+export default async function Home({ searchParams }: { searchParams: Promise<{ deleted?: string }> }) {
   const { t, lang } = await getI18n();
+  const sp = await searchParams;
   const stats = siteStats();
   const featured = searchJobs({ limit: 6 });
 
   return (
     <>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: jsonLdScript([
+        { "@context": "https://schema.org", "@type": "Organization", name: "Rajasthan Kaam", url: siteUrl(), logo: `${siteUrl()}/icon.svg`, description: "Trusted jobs and practical learning in established businesses across India, for people from Rajasthan." },
+        { "@context": "https://schema.org", "@type": "WebSite", name: "Rajasthan Kaam", url: siteUrl(), inLanguage: ["en-IN", "hi-IN"],
+          potentialAction: { "@type": "SearchAction", target: `${siteUrl()}/jobs?q={search_term_string}`, "query-input": "required name=search_term_string" } },
+      ]) }} />
+      {sp.deleted && <div className="mx-auto max-w-6xl px-4 pt-6 sm:px-6"><Notice tone="ok">{t("account_deleted")}</Notice></div>}
       {/* ───────────── HERO ───────────── */}
       <section className="relative overflow-hidden">
         <div className="leheriya-soft absolute inset-y-0 right-0 hidden w-[38%] lg:block" />
@@ -57,18 +65,18 @@ export default async function Home() {
               <div className="absolute inset-x-8 bottom-10 top-[38%] -rotate-[2.5deg]">
                 <div className="ledger h-full rounded-[2px] border border-paper-300 py-5 pl-14 pr-5 shadow-[6px_10px_0_rgba(0,0,0,.18)]">
                   <p className="text-[0.72rem] font-semibold uppercase tracking-[0.16em] text-ink-soft">Shree Ram Menswear</p>
-                  <p className="mt-1 font-display text-[1.65rem] font-semibold leading-tight text-ink">Showroom Sales Trainee</p>
-                  <p className="mt-1 flex items-center gap-1 text-sm text-ink-soft"><IPin size={14} className="text-sindoor-500" />Surat, Ring Road</p>
+                  <p className="mt-1 font-display text-[1.65rem] font-semibold leading-tight text-ink">{lang === "hi" ? "शोरूम सेल्स ट्रेनी" : "Showroom Sales Trainee"}</p>
+                  <p className="mt-1 flex items-center gap-1 text-sm text-ink-soft"><IPin size={14} className="text-sindoor-500" />{lang === "hi" ? "सूरत, रिंग रोड" : "Surat, Ring Road"}</p>
                   <dl className="mt-3 text-[0.92rem]">
-                    {[["Salary", "₹12,000 – 15,000"], ["Hours", "10 am – 9:30 pm"], ["Stay", "Free, shared flat"], ["Deductions", "None"]].map(([k, v]) => (
-                      <div key={k} className="flex h-8 items-end gap-2"><dt className="text-ink-soft">{k}</dt><span className="leader" /><dd className="font-semibold">{v}</dd></div>
+                    {[[t("salary"), "₹12,000 – 15,000"], [t("hours"), lang === "hi" ? "सुबह 10 – रात 9:30" : "10 am – 9:30 pm"], [t("stay"), t("stay_free")], [t("deductions"), t("no_deductions")]].map(([k, v]) => (
+                      <div key={k} className="flex h-8 items-end gap-2"><dt className="flex min-w-0 flex-1 items-end gap-2 text-ink-soft"><span className="truncate">{k}</span><span className="leader" aria-hidden /></dt><dd className="shrink-0 font-semibold">{v}</dd></div>
                     ))}
                   </dl>
                 </div>
                 <Stamp size={108} className="absolute -bottom-9 -right-9 rotate-[14deg]" />
               </div>
               <p className="absolute inset-x-0 top-[17%] text-center font-deva text-[2.6rem] leading-none text-haldi-300">काम</p>
-              <p className="absolute inset-x-0 top-[28%] text-center text-[0.72rem] font-semibold uppercase tracking-[0.3em] text-paper-200/80">earn · learn · grow</p>
+              <p className="absolute inset-x-0 top-[28%] text-center text-[0.72rem] font-semibold uppercase tracking-[0.3em] text-paper-200/80">{lang === "hi" ? "कमाओ · सीखो · बढ़ो" : "earn · learn · grow"}</p>
             </Jharokha>
           </div>
         </div>

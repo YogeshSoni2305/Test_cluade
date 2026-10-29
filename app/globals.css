@@ -1,8 +1,8 @@
 @import "tailwindcss";
 
 @theme {
-  --font-display: "Cormorant Garamond Variable", "Tiro Devanagari Hindi", ui-serif, Georgia, serif;
-  --font-deva: "Tiro Devanagari Hindi", "Cormorant Garamond Variable", serif;
+  --font-display: "Cormorant Garamond", "Tiro Devanagari Hindi", ui-serif, Georgia, serif;
+  --font-deva: "Tiro Devanagari Hindi", "Cormorant Garamond", serif;
   --font-sans: "Mukta", ui-sans-serif, system-ui, sans-serif;
 
   /* Handmade paper & ink */
@@ -12,7 +12,7 @@
   --color-paper-300: #dcc9a6;
   --color-ink: #231912;
   --color-ink-soft: #6a5848;
-  --color-ink-faint: #9a8a78;
+  --color-ink-faint: #736352;
   --color-line: #dccdb2;
   --color-gold: #b08a3e;
 
@@ -99,6 +99,9 @@ body {
 /* Devanagari must never be letter-spaced; and Hindi UI hides the decorative Hindi echo */
 html[lang="hi"] [class*="tracking-"] { letter-spacing: 0 !important; text-transform: none !important; }
 html[lang="hi"] .deva-accent { display: none !important; }
+/* Devanagari has no italic tradition (and skipping it saves a 100 KB font): emphasise with colour instead */
+html[lang="hi"] .font-display.italic, html[lang="hi"] .font-deva.italic { font-style: normal; }
+a:focus-visible, button:focus-visible, summary:focus-visible, [tabindex]:focus-visible { outline: 2px solid var(--color-haldi-500); outline-offset: 2px; border-radius: 2px; }
 ::selection { background: var(--color-haldi-200); color: var(--color-ink); }
 .font-display { font-variant-numeric: lining-nums; }
 .num { font-variant-numeric: lining-nums tabular-nums; }

@@ -32,6 +32,12 @@ export type Job = {
   openings: number;
   status: "open" | "filled" | "closed" | "removed";
   removed_reason: string | null;
+  expires_at: string | null;
+  expiry_reminded: number;
+  flagged_reason: string | null;
+  description_hi: string;
+  responsibilities_hi: string;
+  learning_notes_hi: string;
   created_at: string;
   updated_at: string;
   // joined employer fields
@@ -65,6 +71,8 @@ export type Employer = {
   verified_checks: string[];
   verification_note: string | null;
   verified_at: string | null;
+  gst_norm: string | null;
+  flagged_reason: string | null;
   created_at: string;
 };
 
@@ -84,6 +92,7 @@ export type CandidateProfile = {
   family_name: string | null;
   family_phone: string | null;
   completed: number;
+  searchable: number;
 };
 
 const JOB_SELECT = `
@@ -141,7 +150,10 @@ export type JobFilters = {
 };
 
 export function searchJobs(f: JobFilters): Job[] {
-  const where: string[] = ["j.status = 'open'", "e.verification_status != 'rejected'"];
+  const where: string[] = [
+    "j.status = 'open'", "e.verification_status != 'rejected'", "j.flagged_reason IS NULL",
+    "(j.expires_at IS NULL OR j.expires_at > datetime('now'))",
+  ];
   const args: unknown[] = [];
   if (f.q) {
     where.push("(j.title LIKE ? OR e.business_name LIKE ? OR j.description LIKE ?)");
@@ -207,9 +219,9 @@ export function siteStats() {
   const db = getDb();
   const one = (sql: string) => (db.prepare(sql).get() as { n: number }).n;
   return {
-    openJobs: one("SELECT COUNT(*) n FROM jobs WHERE status='open'"),
+    openJobs: one("SELECT COUNT(*) n FROM jobs WHERE status='open' AND flagged_reason IS NULL AND (expires_at IS NULL OR expires_at > datetime('now'))"),
     verified: one("SELECT COUNT(*) n FROM employers WHERE verification_status='verified'"),
-    cities: one("SELECT COUNT(DISTINCT city) n FROM jobs WHERE status='open'"),
+    cities: one("SELECT COUNT(DISTINCT city) n FROM jobs WHERE status='open' AND flagged_reason IS NULL"),
   };
 }
 
@@ -223,4 +235,15 @@ export function employerRating(employerId: number): { avg: number; count: number
     JOIN applications a ON a.id=f.application_id JOIN jobs j ON j.id=a.job_id
     WHERE j.employer_id=? AND f.from_role='candidate' AND f.hidden=0`).get(employerId) as { avg: number | null; count: number };
   return { avg: r.avg ?? 0, count: r.count };
+}
+
+/** A listing is publicly visible only when open, unflagged, unexpired and from a non-rejected employer. */
+export function isPubliclyVisible(j: Pick<Job, "status" | "flagged_reason" | "expires_at" | "verification_status">, now = new Date()): boolean {
+  if (j.status !== "open" || j.flagged_reason || j.verification_status === "rejected") return false;
+  if (j.expires_at && new Date(j.expires_at.replace(" ", "T") + "Z") <= now) return false;
+  return true;
+}
+
+export function isExpired(j: Pick<Job, "expires_at">, now = new Date()): boolean {
+  return Boolean(j.expires_at && new Date(j.expires_at.replace(" ", "T") + "Z") <= now);
 }

@@ -5,14 +5,15 @@ import { ButaBand, Seal } from "./ornaments";
 export async function Footer() {
   const { t } = await getI18n();
   const cols: [string, [string, string][]][] = [
-    ["Candidates", [["/jobs", t("nav_jobs")], ["/sign-up", t("nav_signup")], ["/safety", t("nav_safety")]]],
-    ["Employers", [["/employer", t("cta_employer_btn")], ["/employer/verification", "Get verified"], ["/safety#employers", "Listing rules"]]],
+    [t("ft_candidates"), [["/jobs", t("nav_jobs")], ["/sign-up", t("nav_signup")], ["/safety", t("nav_safety")]]],
+    [t("ft_employers"), [["/employer", t("cta_employer_btn")], ["/employer/verification", t("cs_get_verified")], ["/safety#employers", t("ft_rules")], ["/letters", t("letter_verify_title")]]],
+    [t("ft_privacy"), [["/safety#privacy", t("ft_privacy_link")], ["/account", t("nav_account")]]],
   ];
   return (
-    <footer className="mt-28 bg-sindoor-800 text-paper-200">
+    <footer className="mt-28 print:hidden bg-sindoor-800 text-paper-200">
       <ButaBand color="#e0a82b" className="bg-sindoor-900" id="buta-foot" />
       <div className="bandhani">
-        <div className="mx-auto grid max-w-6xl gap-12 px-4 py-16 sm:px-6 md:grid-cols-[1.5fr_1fr_1fr]">
+        <div className="mx-auto grid max-w-6xl gap-12 px-4 py-16 sm:px-6 md:grid-cols-[1.5fr_1fr_1fr_1fr]">
           <div>
             <div className="flex items-center gap-3">
               <Seal size={44} tone="paper" />

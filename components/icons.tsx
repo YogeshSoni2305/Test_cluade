@@ -39,6 +39,15 @@ export const IDoc = (p: P) => <Svg {...p}><path d="M6 3.5h8l4 4v13H6Z" /><path d
 export const IInbox = (p: P) => <Svg {...p}><path d="M4 13.5 6.5 5h11l2.5 8.5V19H4Z" /><path d="M4 13.5h4.5l1 2h5l1-2H20" /></Svg>;
 export const IEye = (p: P) => <Svg {...p}><path d="M2.5 12S6 5.5 12 5.5 21.5 12 21.5 12 18 18.5 12 18.5 2.5 12 2.5 12Z" /><circle cx="12" cy="12" r="2.8" /></Svg>;
 
+export const IBell = (p: P) => <Svg {...p}><path d="M6 16.5V11a6 6 0 0 1 12 0v5.5l1.5 2h-15Z" /><path d="M10 20.5a2 2 0 0 0 4 0" /></Svg>;
+export const IChat = (p: P) => <Svg {...p}><path d="M4 5.5h16v11H10l-4.5 3.5v-3.5H4Z" /><path d="M8 10h8M8 13h5" /></Svg>;
+export const IDownload = (p: P) => <Svg {...p}><path d="M12 3.5v12M7 10.5l5 5 5-5M4.5 20h15" /></Svg>;
+export const ITrash = (p: P) => <Svg {...p}><path d="M4.5 6.5h15M9.5 6.5V4h5v2.5M6.5 6.5l1 14h9l1-14M10 10.5v6M14 10.5v6" /></Svg>;
+export const ISpeaker = (p: P) => <Svg {...p}><path d="M4 9.5h3.5L12 5.5v13l-4.5-4H4Z" /><path d="M15.5 9a4 4 0 0 1 0 6M18 6.5a7.5 7.5 0 0 1 0 11" /></Svg>;
+export const ICopy = (p: P) => <Svg {...p}><rect x="8.5" y="8.5" width="11" height="11" rx="1.5" /><path d="M15.5 8.5V5h-11v11h4" /></Svg>;
+export const IRefresh = (p: P) => <Svg {...p}><path d="M19.5 12a7.5 7.5 0 1 1-2.2-5.3M19.5 4.5v4h-4" /></Svg>;
+export const IPrint = (p: P) => <Svg {...p}><path d="M7 9V3.5h10V9M7 17H4.5V9h15v8H17" /><rect x="7" y="14" width="10" height="6.5" /></Svg>;
+
 /* ── goals ───────────────────────────────────────────────── */
 export const IBriefcase = (p: P) => <Svg {...p}><rect x="3.5" y="7.5" width="17" height="12" rx="1.5" /><path d="M9 7.5V5.5h6v2M3.5 12.5h17M11 12.5v2h2v-2" /></Svg>;
 /** tarazu — the shopkeeper's scale */
